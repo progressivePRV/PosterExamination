@@ -573,6 +573,23 @@ route.get('/admin/examiners/:id',[
     });
 });
 
+route.get("/users/profile",verifyToken,(request,response)=>{
+    var query = {"_id":new mongo.ObjectID(decoded._id)};
+    collection.find(query).toArray((err,res)=>{
+        if(err){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(res.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no user found with id "+decoded._id});
+        }
+        var user = new User(res[0]).getUser();
+        closeConnection();
+        return response.status(200).json(user);
+    });
+});
+
 // route.put('/shop/items',connectToUsersDb,[
 //     body('id','id is required for adding item to cart').notEmpty().trim().escape(),
 //     body('id','id should be an integer value').isInt(),
@@ -966,21 +983,6 @@ route.get('/admin/examiners/:id',[
 //     })
 // });
 
-// route.get("/shop/user/profile",connectToUsersDb,(request,response)=>{
-//     var query = {"_id":new mongo.ObjectID(decoded._id)};
-//     collection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no user found with id "+decoded._id});
-//         }
-//         var user = new User(res[0]).getUser();
-//         closeConnection();
-//         return response.status(200).json(user);
-//     });
-// });
+
 
 module.exports = route; 

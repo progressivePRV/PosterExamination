@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "2c3dd26e-971e-4717-9d05-048d0fe44cae",
+		"name": "PosterExamination",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTc2Mjc0LCJpYXQiOjE2MDI5NzI2NzR9.hJv31rvroZYyDRW4pGV1lNvNXcnrAuWqSoYvn6OJFJ8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/users/profile",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Examiner by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/examiners/5f8a4420dc55393ed56de5e6",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"examiners",
+						"5f8a4420dc55393ed56de5e6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Examiners",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/examiners?firstName=a&lastName=ar&email=gmail",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"examiners"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "a"
+						},
+						{
+							"key": "lastName",
+							"value": "ar"
+						},
+						{
+							"key": "email",
+							"value": "gmail"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Teams For Examiners",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/examiner/teams",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"examiner",
+						"teams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Teams for Admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/teams?name=dhwani",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"teams"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "dhwani"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Teams",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"dhwani\",\n    \"members\":\"aditi, shweta, nidhi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/teams",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"teams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questions by ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/examiner/questions/5",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"examiner",
+						"questions",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/examiner/questions",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"examiner",
+						"questions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Examiners",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyODk5NTQ1LCJpYXQiOjE2MDI4OTU5NDV9.JsQj4k1dXDe-77_Jli_DssXsdc5UttwylwaNr-JBcgs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\":\"Anirban\",\n    \"lastName\":\"Acharya\",\n    \"email\":\"anirban@gmail.com\",\n    \"password\":\"examiner123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/examiners",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"examiners"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
