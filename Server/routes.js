@@ -462,34 +462,48 @@ route.get('/examiner/teams',[
     });
 });
 
-// route.get('/examiner/teams/:id',[
-//     param('id','id is required to search examiner by id').notEmpty().trim().escape(),
-//     param('id','id should be of correct format').isMongoId()
-// ],(request,response)=>{
-//     var err = validationResult(request);
-//     if(!err.isEmpty()){
-//         closeConnection();
-//         return response.status(400).json({"error":err});
-//     }
+route.get('/admin/teams/:id',[
+    param('id','id is required to search examiner by id').notEmpty().trim().escape(),
+    param('id','id should be of correct format').isMongoId()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
 
-//     var query = {"_id":mongo.ObjectID(request.params.id)};
+    var rawdata = fs.readFileSync('questions.json');
+    if(!rawdata){
+        closeConnection();
+        return response.status(400).json({"error":"No questions file found"});
+    }
+    var qs = JSON.parse(rawdata);
 
-//     teamsCollection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no team found"});
-//         }
+    var query = {"_id":mongo.ObjectID(request.params.id)};
 
-//         var team = res[0];
-//         delete team.examiners;
-//         closeConnection();
-//         return response.status(200).json(team);
-//     });
-// });
+    teamsCollection.find(query).toArray((err,res)=>{
+        if(err){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(res.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no team found"});
+        }
+
+        var team = res[0];
+            var examiners = team.examiners;
+            for(var j=0;j<examiners.length;j++){
+                var questions = examiners[j].questions;
+                for(var k=0;k<questions.length;k++){
+                    var question = qs.results.find(q=>q.id==questions[k].id);
+                    team.examiners[j].questions[k].question = question.question;
+                }
+            }
+        closeConnection();
+        return response.status(200).json(team);
+    });
+});
 
 route.get('/admin/teams',[
     query('name','name cannot be a numeric value').optional().not().isNumeric()

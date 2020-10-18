@@ -134,7 +134,8 @@
 					{
 						"key": "teamToken",
 						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmOGE1YTM5YWE1NTU0M2Y4OTAxY2M4NSIsImlhdCI6MTYwMjk4ODYzNX0.nQyoxquZuEOgndmOvcdM26KkPEN_HGQQJvW-0mEm1M8",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"url": {
@@ -466,6 +467,38 @@
 						"teams",
 						"5f8a5a39aa55543f8901cc85",
 						"qrToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Team by ID for Admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTkwMjc0LCJpYXQiOjE2MDI5ODY2NzR9.d_MS9JqqjeHVGvOW6siaEWAjhOxfVm3KMqTm47Ap3vA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/admin/teams/5f8a5f4d3517833fad3a2e57",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"teams",
+						"5f8a5f4d3517833fad3a2e57"
 					]
 				}
 			},
