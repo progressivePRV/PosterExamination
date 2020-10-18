@@ -301,6 +301,7 @@ route.get("/users/login",[
 
 });
 
+
 route.get("/examiner/questions",(request,response)=>{
     try{
         var rawdata = fs.readFileSync('questions.json');
@@ -413,8 +414,28 @@ route.post('/admin/teams',[
     }
 });
 
-route.get('/examiner/teams',(request,response)=>{
-    teamsCollection.find().toArray((err,res)=>{
+route.get('/examiner/teams',[
+    header('teamToken','teamToken should be of correct format').optional().isJWT()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
+   
+    var query={};
+
+    if(request.header('teamToken')){
+        try{
+            var decodedToken = jwt.verify(request.header('teamToken'), tokenSecret);
+            query._id=mongo.ObjectID(decodedToken.id);
+        }catch(error){
+            closeConnection();
+            return response.status(400).json({"error":error.toString()});
+        }
+    }
+
+    teamsCollection.find(query).toArray((err,res)=>{
         if(err){
             closeConnection();
             return response.status(400).json({"error":err});
@@ -424,43 +445,51 @@ route.get('/examiner/teams',(request,response)=>{
             return response.status(400).json({"error":"no teams found"});
         }
 
-        var teams = res;
-        for(var i=0;i<teams.length;i++){
-            delete teams[i].examiners;
+        if(!request.header('teamToken')){
+            var teams = res;
+            for(var i=0;i<teams.length;i++){
+                delete teams[i].examiners;
+            }
+            closeConnection();
+            return response.status(200).json(teams);
         }
-        closeConnection();
-        return response.status(200).json(teams);
+        else{
+            var team = res[0];
+            delete team.examiners;
+            closeConnection();
+            return response.status(200).json(team);
+        }
     });
 });
 
-route.get('/examiner/teams/:id',[
-    param('id','id is required to search examiner by id').notEmpty().trim().escape(),
-    param('id','id should be of correct format').isMongoId()
-],(request,response)=>{
-    var err = validationResult(request);
-    if(!err.isEmpty()){
-        closeConnection();
-        return response.status(400).json({"error":err});
-    }
+// route.get('/examiner/teams/:id',[
+//     param('id','id is required to search examiner by id').notEmpty().trim().escape(),
+//     param('id','id should be of correct format').isMongoId()
+// ],(request,response)=>{
+//     var err = validationResult(request);
+//     if(!err.isEmpty()){
+//         closeConnection();
+//         return response.status(400).json({"error":err});
+//     }
 
-    var query = {"_id":mongo.ObjectID(request.params.id)};
+//     var query = {"_id":mongo.ObjectID(request.params.id)};
 
-    teamsCollection.find(query).toArray((err,res)=>{
-        if(err){
-            closeConnection();
-            return response.status(400).json({"error":err});
-        }
-        if(res.length<=0){
-            closeConnection();
-            return response.status(400).json({"error":"no team found"});
-        }
+//     teamsCollection.find(query).toArray((err,res)=>{
+//         if(err){
+//             closeConnection();
+//             return response.status(400).json({"error":err});
+//         }
+//         if(res.length<=0){
+//             closeConnection();
+//             return response.status(400).json({"error":"no team found"});
+//         }
 
-        var team = res[0];
-        delete team.examiners;
-        closeConnection();
-        return response.status(200).json(team);
-    });
-});
+//         var team = res[0];
+//         delete team.examiners;
+//         closeConnection();
+//         return response.status(200).json(team);
+//     });
+// });
 
 route.get('/admin/teams',[
     query('name','name cannot be a numeric value').optional().not().isNumeric()
@@ -595,6 +624,72 @@ route.get('/admin/examiners/:id',[
             closeConnection();
             return response.status(400).json({"error":"no examiner found with id "+request.params.id});
         }
+    });
+});
+
+route.get('/admin/examiners/:id/qrToken',[
+    param('id','id is required to search examiner by id').notEmpty().trim().escape(),
+    param('id','id should be of correct format').isMongoId()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
+
+    var query = {"_id":mongo.ObjectID(request.params.id)};
+
+    collection.find(query,{ projection: { password: 0 } }).toArray((err,res)=>{
+        if(err){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(res.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no examiner found with id "+request.params.id});
+        }
+
+        var examiner = res[0];
+        if(examiner.role==='examiner'){
+            closeConnection();
+            var token = jwt.sign(examiner, tokenSecret);
+            return response.status(200).json({"qrToken":token});
+        }
+        else{
+            closeConnection();
+            return response.status(400).json({"error":"no examiner found with id "+request.params.id});
+        }
+    });
+});
+
+route.get('/admin/teams/:id/qrToken',[
+    param('id','id is required to search examiner by id').notEmpty().trim().escape(),
+    param('id','id should be of correct format').isMongoId()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
+
+    var query = {"_id":mongo.ObjectID(request.params.id)};
+
+    teamsCollection.find(query).toArray((err,res)=>{
+        if(err){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(res.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no team found"});
+        }
+
+        var team = {
+            id: res[0]._id
+        };
+        var token = jwt.sign(team, tokenSecret);
+        closeConnection();
+        return response.status(200).json({"qrToken":token});
     });
 });
 
