@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const User = require("./User");
 const { response, request } = require("express");
 const fs = require('fs');
+const { userInfo } = require("os");
 
 const MongoClient = mongo.MongoClient;
 const uri = "mongodb+srv://rojatkaraditi:AprApr_2606@test.z8ya6.mongodb.net/ScopeDB?retryWrites=true&w=majority";
@@ -177,27 +178,6 @@ route.post("/admin/examiners",[
                     result = res.ops[0].getUser();
                     closeConnection();
                     return response.status(200).json(result);
-                    
-                    // var userItem={
-                    //     "userId":usr._id,
-                    //     "cartItems":[],
-                    //     "previousOrders":[]
-                    // }
-
-                    // userItemsCollection.insertOne(userItem,(err,reslt)=>{
-                    //     if(err){
-                    //         result={"error":err};
-                    //         responseCode=400;
-                    //     }
-                    //     else{
-                    //         usr.exp = Math.floor(Date.now() / 1000) + (60 * 60);
-                    //         var token = jwt.sign(usr, tokenSecret);
-                    //         result=res.ops[0].getUser();
-                    //         result.token=token;
-                    //     }
-                    //     closeConnection();
-                    //     return response.status(responseCode).json(result);
-                    // });
                 }
                 else{
                     closeConnection();
@@ -362,12 +342,12 @@ route.get("/examiner/questions/:id",[
             }
             else{
                 closeConnection();
-                return response.status(400).json({"error":"No item found with id "+request.params.id});
+                return response.status(400).json({"error":"No question found with id "+request.params.id});
             }
         }
         else{
             closeConnection();
-            return response.status(400).json({"error":"No items present"});
+            return response.status(400).json({"error":"No questions present"});
         }
         
     }
@@ -446,11 +426,39 @@ route.get('/examiner/teams',(request,response)=>{
 
         var teams = res;
         for(var i=0;i<teams.length;i++){
-            delete teams[i].members;
             delete teams[i].examiners;
         }
         closeConnection();
         return response.status(200).json(teams);
+    });
+});
+
+route.get('/examiner/teams/:id',[
+    param('id','id is required to search examiner by id').notEmpty().trim().escape(),
+    param('id','id should be of correct format').isMongoId()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
+
+    var query = {"_id":mongo.ObjectID(request.params.id)};
+
+    teamsCollection.find(query).toArray((err,res)=>{
+        if(err){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(res.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no team found"});
+        }
+
+        var team = res[0];
+        delete team.examiners;
+        closeConnection();
+        return response.status(200).json(team);
     });
 });
 
@@ -469,6 +477,13 @@ route.get('/admin/teams',[
         query.name = rule;
     }
 
+    var rawdata = fs.readFileSync('questions.json');
+    if(!rawdata){
+        closeConnection();
+        return response.status(400).json({"error":"No questions file found"});
+    }
+    var qs = JSON.parse(rawdata);
+
     teamsCollection.find(query).toArray((err,res)=>{
         if(err){
             closeConnection();
@@ -480,6 +495,16 @@ route.get('/admin/teams',[
         }
 
         var teams = res;
+        for(var i=0;i<teams.length;i++){
+            var examiners = teams[i].examiners;
+            for(var j=0;j<examiners.length;j++){
+                var questions = examiners[j].questions;
+                for(var k=0;k<questions.length;k++){
+                    var question = qs.results.find(q=>q.id==questions[k].id);
+                    teams[i].examiners[j].questions[k].question = question.question;
+                }
+            }
+        }
         closeConnection();
         return response.status(200).json(teams);
     });
@@ -590,398 +615,126 @@ route.get("/users/profile",verifyToken,(request,response)=>{
     });
 });
 
-// route.put('/shop/items',connectToUsersDb,[
-//     body('id','id is required for adding item to cart').notEmpty().trim().escape(),
-//     body('id','id should be an integer value').isInt(),
-//     body('quantity','quantity is required for adding item to cart').notEmpty().trim().escape(),
-//     body('quantity','quantity should be a valid integer value gretaer than 0').isInt({gt:0}),
-//     body('operation','operation is required for adding item to cart').notEmpty().trim().escape(),
-//     body('operation','operation can only be add or remove').isIn(['add','remove'])
-// ],(request,response)=>{
-//     var err = validationResult(request);
-//     if(!err.isEmpty()){
-//         closeConnection();
-//         return response.status(400).json({"error":err});
-//     }
+route.post('/examiner/score',[
+    body('teamId','teamId required for creating team score').notEmpty().trim().escape(),
+    body('teamId','teamId should be of a valid format').isMongoId(),
+    body('scores','scores needed for team evaluation').notEmpty(),
+    body('scores','scores should be present is an array').isArray()
+],(request,response)=>{
+    var err = validationResult(request);
+    if(!err.isEmpty()){
+        closeConnection();
+        return response.status(400).json({"error":err});
+    }
 
-//     var query = {"userId":new mongo.ObjectID(decoded._id)};
-//     userItemsCollection.find(query,{ projection: { cartItems: 1 } }).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         else if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no cart found for user"});
-//         }
-//         else{
-//             var items = res[0].cartItems;
-//             //console.log(res);
-//             var item = items.find(it => it.id==request.body.id);
-//             if(item){
-//                 var idx = items.indexOf(item);
-//                 if(request.body.operation==='add'){
-//                     items.splice(idx,1);
-//                     item.quantity=(parseInt(item.quantity) + parseInt(request.body.quantity));
-//                     items.push(item);
-//                 }
-//                 else if(request.body.operation==='remove'){
-//                     if(parseInt(request.body.quantity)>parseInt(item.quantity)){
-//                         closeConnection();
-//                         return response.status(400).json({"error":"trying to remove more items than present in cart"});
-//                     }
-//                     else if(parseInt(request.body.quantity)==parseInt(item.quantity)){
-//                         items.splice(idx,1);
-//                     }
-//                     else{
-//                         items.splice(idx,1);
-//                         item.quantity=parseInt(item.quantity) - parseInt(request.body.quantity);
-//                         items.push(item);
-//                     }
-//                 }
-//             }
-//             else{
-//                 if(request.body.operation==='add'){
-//                     var rawdata = fs.readFileSync('discount.json');
-//                     if(!rawdata){
-//                         closeConnection();
-//                         return response.status(400).json({"error":"No items file found"});
-//                     }
-//                     var data = JSON.parse(rawdata);
-//                     var newItem = data.results.find(it=>it.id==request.body.id);
-//                     if(newItem){
-//                         var addItem = {
-//                             "id":request.body.id,
-//                             "quantity":parseInt(request.body.quantity)
-//                         }
-//                         items.push(addItem);
-//                     }
-//                     else{
-//                         closeConnection();
-//                         return response.status(400).json({"error":"No item with id "+request.body.id+" exists"});
-//                     }
-//                 }
-//                 else if(request.body.operation==='remove'){
-//                     closeConnection();
-//                     return response.status(400).json({"error":"Item not present in cart to remove"});
-//                 }
-//             }
+    var scores = request.body.scores;
+    var quetionIds = [];
+    var total = 0;
 
-//             var updatedData = {
-//                 "cartItems":items
-//             };
-//             var newQuery = {$set : updatedData};
-//             userItemsCollection.updateOne(query,newQuery,(err,reslt)=>{
-//                 if(err){
-//                     closeConnection();
-//                     return response.status(400).json({"error":"cart could not be updated"});
-//                 }
-//                 else{
-//                     closeConnection();
-//                     return response.status(200).json({"result":"cart updated"});
-//                 }
-//             })
-//         }
-//     });
+    if(scores.length!=7){
+        closeConnection();
+        return response.status(400).json({"error":"incorrect number of questions submitted"});
+    }
 
-// });
+    var rawdata = fs.readFileSync('questions.json');
+    if(!rawdata){
+        closeConnection();
+        return response.status(400).json({"error":"No questions file found"});
+    }
+    var questions = JSON.parse(rawdata);
 
-// route.get('/shop/cart',connectToUsersDb,(request,response)=>{
-//     var query = {"userId":new mongo.ObjectID(decoded._id)};
-//     userItemsCollection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         else if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no cart found for user"});
-//         }
-//         else{
-//             var rawdata = fs.readFileSync('discount.json');
-//             if(!rawdata){
-//                 closeConnection();
-//                 return response.status(400).json({"error":"No items file found"});
-//             }
-//             var data = JSON.parse(rawdata);
-            
-//             var items = res[0].cartItems;
-//             if(items.length<=0){
-//                 closeConnection();
-//                 return response.status(200).json({"total":0.00});
-//             }
-//             else{
-//                 var cnt = items.length;
-//                 var discountPrice=0.0;
-//                 var cart=[];
-//                 items.forEach(item=>{
-//                     var newItem = data.results.find(it=>it.id==item.id);
-//                     var totalPrice = parseFloat(newItem.price)*parseFloat(item.quantity);
-//                     var discount = (totalPrice*newItem.discount)/100;
-//                     discountPrice = parseFloat(discountPrice) + (parseFloat(totalPrice)-parseFloat(discount));
-//                     newItem.quantity=item.quantity;
-//                     cart.push(newItem);
-//                     cnt--;
-//                     if(cnt==0){
-//                         var result = {
-//                             "total":discountPrice.toFixed(2),
-//                             "cart":cart
-//                         }
-//                         closeConnection();
-//                         return response.status(200).json(result);
-//                     }
-//                 });
-//             }
-//         }
-//     });
-// });
+    for(var i=0;i<scores.length;i++){
+        if(!scores[i].id || !scores[i].marks){
+            closeConnection();
+            return response.status(400).json({"error":"id or score not mentioned for some questions"});
+        }
 
-// route.get("/shop/customerToken",connectToUsersDb,(request,response)=>{
-//     var query = {"_id":new mongo.ObjectID(decoded._id)};
-//     collection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         else if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no user found with id "+decoded._id});
-//         }
-//         else{
-//             var user = new User(res[0]).getUser();
-//             gateway.clientToken.generate({
-//                 customerId: user.customerId,
-//                 options:{
-//                     //failOnDuplicatePaymentMethod: true,
-//                     verifyCard: true
-//                 }
-//               }, (err, res) => {
-//                   if(err){
-//                       closeConnection();
-//                       return response.status(400).json({"error":err});
-//                   }
-//                   if(res && res.clientToken){
-//                     const clientToken = res.clientToken;
-//                     closeConnection();
-//                     return response.status(200).json({"clientToken":clientToken})
-//                   }
-//                   else{
-//                     closeConnection();
-//                     return response.status(400).json({"error":"client token could not be generated"}); 
-//                   }
-//               });
-//         }
-//     });
-// });
+        if(!Number.isInteger(scores[i].id) || !Number.isInteger(scores[i].marks)){
+            closeConnection();
+            return response.status(400).json({"error":"some id or marks is not an integer value"});
+        }
 
-// route.post("/shop/checkout",connectToUsersDb,[
-//     body("nonce","nonce is required to make payment").notEmpty().trim().escape(),
-//     body("deviceData","deviceData is required to make payment").notEmpty().trim().escape(),
-//     body("date","date needs to be provided to checkout").notEmpty().trim().escape(),
-//     body("address","address required to checkout").notEmpty().trim().escape(),
-//     body("city","city required to checkout").notEmpty().trim().escape(),
-//     body("state","state required to checkout").notEmpty().trim().escape(),
-//     body("zipCode","zip code required to checkout").notEmpty().trim().escape(),
-//     body("zipCode","zip code is invalid").isInt().isLength({min:5,max:5}),
-//     body("phoneNumber","phone number needed to checkout").notEmpty().trim().escape(),
-//     body("phoneNumber","phone should be valid").isMobilePhone()
-// ],(request,response)=>{
-//     var checkErr = validationResult(request);
-//     if(!checkErr.isEmpty()){
-//         closeConnection();
-//         return response.status(400).json({"error":checkErr});
-//     }
+        var question = questions.results.find(it=>it.id==scores[i].id);
+        if(!question){
+            closeConnection();
+            return response.status(400).json({"error":"question with id "+scores[i].id+" not found"});
+        }
+        var item = quetionIds.find(id=>id==scores[i].id);
+        if(item){
+            closeConnection();
+            return response.status(400).json({"error":"some questions have been evaluated more than once"});
+        }
 
-//     var query = {"userId":new mongo.ObjectID(decoded._id)};
-//     userItemsCollection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no user found with id "+decoded._id});
-//         }
-//         var userCart = res[0];
-//         if(!userCart.cartItems || !userCart.previousOrders || userCart.cartItems.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"cannot proceed, user cart is improper"});
-//         }
+        if(scores[i].marks<0 || scores[i].marks>4){
+            closeConnection();
+            return response.status(400).json({"error":"scores can have minimum 0 and maximum 4 value"});
+        }
 
-//         //code goes here:
-//         var discountPrice=parseFloat(0.0);
-//         var cartItems = userCart.cartItems;
+        quetionIds.push(scores[i].id);
+        total = total + scores[i].marks;
+    }
 
-//         var rawdata = fs.readFileSync('discount.json');
-//         if(!rawdata){
-//             closeConnection();
-//             return response.status(400).json({"error":"No items file found"});
-//         }
-//         var data = JSON.parse(rawdata);
+    var query = {'_id':mongo.ObjectID(request.body.teamId)};
 
-//         for(var i=0;i<cartItems.length;i++){
-//             var item = cartItems[i];
-//             var newItem = data.results.find(it=>it.id==item.id);
-//             var totalPrice = parseFloat(newItem.price)*parseFloat(item.quantity);
-//             var discount = parseFloat((totalPrice*newItem.discount)/100);
-//             discountPrice = parseFloat(discountPrice) + (parseFloat(totalPrice)-parseFloat(discount));
-//         }
+    teamsCollection.find(query).toArray((error,resp)=>{
+        if(error){
+            closeConnection();
+            return response.status(400).json({"error":err});
+        }
+        if(resp.length<=0){
+            closeConnection();
+            return response.status(400).json({"error":"no team found with id "+request.body.teamId});
+        }
 
-//         gateway.transaction.sale({
-//             amount: discountPrice.toFixed(2),
-//             paymentMethodNonce: request.body.nonce,
-//             deviceData: request.body.deviceData,
-//             options: {
-//               submitForSettlement: true
-//             }
-//           }, (error, result) => {
-//               if(error){
-//                   closeConnection();
-//                   return response.status(400).json({"error":error});
-//               }
-//             if (!result.success) {
-//                 closeConnection();
-//                 console.log(result);
-//                 return response.status(400).json({"error":"payment could not be processed. "+result.params.message});
-//             } else {
-//                     var transaction = result.transaction;
-//                     //console.log(result.transaction);
-//                     var customer = result.transaction.customer;
-//                     var card = result.transaction.creditCard;
+        var team = resp[0];
+        var examiners = [];
+        examiners = team.examiners;
+        var msg="";
 
-//                     var creditCard = {
-//                         "maskedNumber":card.maskedNumber,
-//                         "expirationDate":card.expirationDate,
-//                         "cardType":card.cardType,
-//                         "customerLocation":card.customerLocation,
-//                         "cardholderName":card.cardholderName
-//                     };
+        var examinerScore = examiners.find(exam=>exam.examinerId==decoded._id);
+        var updatedData={};
+        var newExaminer = {
+            "examinerId":decoded._id,
+            "score":total,
+            "questions":request.body.scores
+        };
+        if(!examinerScore){
+            var newAverage = ((parseFloat(team.averageScore)*examiners.length)+total)/(examiners.length+1);
+            examiners.push(newExaminer);
+            updatedData = {
+                "averageScore":newAverage.toFixed(3),
+                "examiners":examiners
+            };
+            msg="score added";
+        }
+        else{
+            var idx = examiners.indexOf(examinerScore);
+            var previousScore = (parseFloat(team.averageScore)*examiners.length)-examinerScore.score;
+            var newAverage = (previousScore+total)/examiners.length;
+            examiners.splice(idx,1);
+            examiners.push(newExaminer);
+            updatedData = {
+                "averageScore":newAverage.toFixed(3),
+                "examiners":examiners
+            };
+            msg="score updated";
+        }
 
-//                     var cust = {
-//                         "id":customer.id,
-//                         "firstName":customer.firstName,
-//                         "lastName":customer.lastName,
-//                         "email":customer.email,
-//                     };
-                
-//                     var transcationData={
-//                         "id":transaction.id,
-//                         "status":transaction.status,
-//                         "type":transaction.type,
-//                         "currencyIsoCode":transaction.currencyIsoCode,
-//                         "amount":transaction.amount,
-//                         "merchantAccountId":transaction.merchantAccountId,
-//                         "createdAt":transaction.createdAt,
-//                         "updatedAt":transaction.updatedAt,
-//                         "customer":cust,
-//                         "creditCard":creditCard
-//                     };
-                    
-//                     var newPreviousOrder = {
-//                         "amount":discountPrice.toFixed(2),
-//                         "date":request.body.date,
-//                         "address":request.body.address,
-//                         "city":request.body.city,
-//                         "state":request.body.state,
-//                         "zipCode":request.body.zipCode,
-//                         "phoneNumber":request.body.phoneNumber,
-//                         "transaction":transcationData,
-//                         "items":userCart.cartItems,
-//                     };
-//                     delete userCart._id;
-//                     delete userCart.userId;
-//                     userCart.previousOrders.push(newPreviousOrder);
-//                     userCart.cartItems=[];
-    
-//                     var newQuery={$set:userCart};
-//                     userItemsCollection.updateOne(query,newQuery,(e,reslt)=>{
-//                         if(e){
-//                             closeConnection();
-//                             return response.status(400).json({"error":e});
-//                         }
-//                         else{
-//                             closeConnection();
-//                             return response.status(200).json({"result":"payment successful"});
-//                         }
-//                     });
-//                 // closeConnection();
-//                 // return response.status(200).json({"result":result.transaction});
-//             }
-//           });
-//     });
-// });
+        var newQuery = {$set : updatedData};
 
-// route.get("/shop/orders",connectToUsersDb,(request,response)=>{
-//     var query = {"userId":new mongo.ObjectID(decoded._id)};
-//     userItemsCollection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no user found with id "+decoded._id});
-//         }
-//         var userCart = res[0];
-//         if(!userCart.previousOrders || userCart.previousOrders.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no previous orders found"});
-//         }
+        teamsCollection.updateOne(query,newQuery,(err,res)=>{
+            if(err){
+                closeConnection();
+                return response.status(400).json({"error":"score could not be added/updated"});
+            }
+            else{
+                closeConnection();
+                return response.status(200).json({"result":msg});
+            }
+        });
+    });
+});
 
-//         var rawdata = fs.readFileSync('discount.json');
-//         if(!rawdata){
-//             closeConnection();
-//             return response.status(400).json({"error":"No items file found"});
-//         }
-//         var data = JSON.parse(rawdata);
-
-//         var orderItems=[];
-//         for(var i=0;i<userCart.previousOrders.length;i++){
-//             var item = userCart.previousOrders[i];
-//             var items=[];
-//             for(var j=0;j<item.items.length;j++){
-//                 var newItem = data.results.find(it=>it.id==item.items[j].id);
-//                 newItem.quantity=item.items[j].quantity;
-//                 items.push(newItem);
-//             }
-//             item.items=items;
-//             delete item.transaction;
-//             orderItems.push(item);
-//         }
-//         closeConnection();
-//         return response.status(200).json(orderItems);
-//     });
-// });
-
-// route.delete("/shop/cart",connectToUsersDb,(request,response)=>{
-//     var query = {"userId":new mongo.ObjectID(decoded._id)};
-//     userItemsCollection.find(query).toArray((err,res)=>{
-//         if(err){
-//             closeConnection();
-//             return response.status(400).json({"error":err});
-//         }
-//         if(res.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no user found with id "+decoded._id});
-//         }
-//         var userCart = res[0];
-//         if(!userCart.cartItems || userCart.cartItems.length<=0){
-//             closeConnection();
-//             return response.status(400).json({"error":"no items found in cart"});
-//         }
-//         var newQuery={$set:{"cartItems":[]}};
-//         userItemsCollection.updateOne(query,newQuery,(e,reslt)=>{
-//             if(e){
-//                 closeConnection();
-//                 return response.status(400).json({"error":err});
-//             }
-//             else{
-//                 closeConnection();
-//                 return response.status(200).json({"result":"cart emptied"});
-//             }
-//         })
-//     })
-// });
 
 
 

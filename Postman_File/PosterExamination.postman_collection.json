@@ -44,7 +44,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTg2MTE5LCJpYXQiOjE2MDI5ODI1MTl9.JB0QK8JLhRRAcrvZbL8sXUj0YMjf2wkLFGkPIJMQAF0",
 							"type": "string"
 						}
 					]
@@ -76,7 +76,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTg2MTE5LCJpYXQiOjE2MDI5ODI1MTl9.JB0QK8JLhRRAcrvZbL8sXUj0YMjf2wkLFGkPIJMQAF0",
 							"type": "string"
 						}
 					]
@@ -84,7 +84,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/examiners?firstName=a&lastName=ar&email=gmail",
+					"raw": "localhost:3000/api/v1/admin/examiners",
 					"host": [
 						"localhost"
 					],
@@ -98,15 +98,18 @@
 					"query": [
 						{
 							"key": "firstName",
-							"value": "a"
+							"value": "a",
+							"disabled": true
 						},
 						{
 							"key": "lastName",
-							"value": "ar"
+							"value": "ar",
+							"disabled": true
 						},
 						{
 							"key": "email",
-							"value": "gmail"
+							"value": "gmail",
+							"disabled": true
 						}
 					]
 				}
@@ -152,7 +155,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTg2MTE5LCJpYXQiOjE2MDI5ODI1MTl9.JB0QK8JLhRRAcrvZbL8sXUj0YMjf2wkLFGkPIJMQAF0",
 							"type": "string"
 						}
 					]
@@ -160,7 +163,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/teams?name=dhwani",
+					"raw": "localhost:3000/api/v1/admin/teams",
 					"host": [
 						"localhost"
 					],
@@ -174,7 +177,8 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "dhwani"
+							"value": "dhwani",
+							"disabled": true
 						}
 					]
 				}
@@ -355,6 +359,78 @@
 						"v1",
 						"admin",
 						"examiners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get team by id for examiners",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/v1/examiner/teams/5f8a5f4d3517833fad3a2e57",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"examiner",
+						"teams",
+						"5f8a5f4d3517833fad3a2e57"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add/Update Team Score for Examiner",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhM2VkZjA1NzBkYTNlOWE1ODczYzkiLCJmaXJzdE5hbWUiOiJKYW5pY2UiLCJsYXN0TmFtZSI6IlNtaXRoIiwiZW1haWwiOiJqYW5pY2VAZ21haWwuY29tIiwicm9sZSI6ImV4YW1pbmVyIn0.rzu1cbCKkjDGwHaxFvWOAmHx9j4My1qZ3HFyg6kduAY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teamId\":\"5f8a5f4d3517833fad3a2e57\",\n    \"scores\":[\n        {\n            \"id\":1,\n            \"marks\":3\n        },\n        {\n            \"id\":2,\n            \"marks\":3\n        },\n        {\n            \"id\":3,\n            \"marks\":1\n        },\n        {\n            \"id\":4,\n            \"marks\":3\n        },\n        {\n            \"id\":5,\n            \"marks\":4\n        },\n        {\n            \"id\":6,\n            \"marks\":1\n        },\n        {\n            \"id\":7,\n            \"marks\":2\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/examiner/score",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"examiner",
+						"score"
 					]
 				}
 			},
