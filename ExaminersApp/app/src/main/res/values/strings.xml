@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ExaminersApp</string>
+    <string name="log_in_with_qr_code">Login with QR-Code</string>
+</resources>
