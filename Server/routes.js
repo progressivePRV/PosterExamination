@@ -753,7 +753,7 @@ route.post('/examiner/score',[
     var questions = JSON.parse(rawdata);
 
     for(var i=0;i<scores.length;i++){
-        if(!scores[i].id || !scores[i].marks){
+        if(typeof scores[i].id==='undefined' || scores[i].id===null || typeof scores[i].marks==='undefined' ||  scores[i].marks===null){
             closeConnection();
             return response.status(400).json({"error":"id or score not mentioned for some questions"});
         }
