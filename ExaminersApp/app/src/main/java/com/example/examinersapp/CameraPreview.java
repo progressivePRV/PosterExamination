@@ -19,8 +19,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Size;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +45,10 @@ public class CameraPreview extends AppCompatActivity {
     private int REQUEST_CODE_PERMISSIONS = 1111;
     private final String[] REQUIRED_PERMISSIONS = new String[]
             {"android.permission.CAMERA","android.permission.WRITE_EXTERNAL_STORAGE"};
+
+
+    CountDownTimer cdt = null;
+    TextView timer_tv;
 
     // for cameraX
     PreviewView previewView;
@@ -74,8 +81,38 @@ public class CameraPreview extends AppCompatActivity {
 
         //getting views
         previewView = findViewById(R.id.previewView);
+        timer_tv = findViewById(R.id.timer_tv_in_camera_preview);
+
+        //StartHandler();
+        StartCountDownTimer();
 
     }
+
+    @Override
+    protected void onStop() {
+        cdt.cancel();
+        Intent i = new Intent();
+        setResult(RESULT_CANCELED,i);
+        super.onStop();
+    }
+
+    private void StartCountDownTimer() {
+        Log.d(TAG, "StartCountDownTimer: called");
+        cdt =  new CountDownTimer(30000,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                Log.d(TAG, "onTick: ");
+                timer_tv.setText(millisUntilFinished / 1000+" s");
+            }
+
+            @Override
+            public void onFinish() {
+                finish();
+            }
+        };
+        cdt.start();
+    }
+
 
     private void StartCamera() {
 
@@ -110,7 +147,7 @@ public class CameraPreview extends AppCompatActivity {
         // this is for analysing the image
         ImageAnalysis imageAnalysis =
                 new ImageAnalysis.Builder()
-                        .setTargetResolution(new Size(1280, 720))
+                        .setTargetResolution(new Size(680, 400))
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
 
@@ -133,12 +170,12 @@ public class CameraPreview extends AppCompatActivity {
                 // ...
                 GiveQRCodeResult(image,imageProxy);
                 Log.d(TAG, "analyze: am i getting resulr in analyzer result=>"+qr_code_detector_result);
-                if(qr_code_detector_result.startsWith("com.example.examinersapp")){
+                if(!qr_code_detector_result.isEmpty()){
                     // app got the qr code for what it was looking for
-                    int l = "com.example.examinersapp".length();  // lenght of starting text
-                    String text = qr_code_detector_result.substring(l);
+//                    int l = "com.example.examinersapp".length();  // lenght of starting text
+//                    String text = qr_code_detector_result.substring(l);
                     Intent i = new Intent();
-                    i.putExtra("result",text);
+                    i.putExtra("result",qr_code_detector_result);
                     setResult(RESULT_OK,i);
                     finish();
                 }
