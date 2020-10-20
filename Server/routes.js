@@ -804,6 +804,8 @@ route.post('/examiner/score',[
         var updatedData={};
         var newExaminer = {
             "examinerId":decoded._id,
+            "examinerFirstName":decoded.firstName,
+            "examinerLastName":decoded.lastName,
             "score":total,
             "questions":request.body.scores
         };
