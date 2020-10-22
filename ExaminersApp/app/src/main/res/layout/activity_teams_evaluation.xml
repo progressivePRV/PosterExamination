@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/welcom_tv_in_TeamEvaluation" />
 
     <ProgressBar
-        android:id="@+id/progressBar_in_teamsEvaluation"
+        android:id="@+id/progressBar_inTeamEvaluation"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -75,13 +75,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pb_txt_in_teamsEvaluation"
+        android:id="@+id/pb_txt_inTeamEvaluation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/getting_teams_txt"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar_in_teamsEvaluation"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar_inTeamEvaluation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

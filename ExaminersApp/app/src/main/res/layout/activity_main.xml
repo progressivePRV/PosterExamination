@@ -31,18 +31,18 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/pb_txt_in_teamsEvaluation"
+        android:id="@+id/pb_txt_inQuestionActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/authentication_txt"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar_in_teamsEvaluation"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar_inQuestionActivity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar_in_teamsEvaluation"
+        android:id="@+id/progressBar_inQuestionActivity"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
