@@ -14,7 +14,26 @@ app.use(bodyParser.json());
 
 app.use('/api/'+version,routes);
 
+const fs = require('fs');
+
+app.use('/',express.static('public'));
+
 app.listen(port,()=>{
     console.log("Listening on port: "+port);
 });
 
+app.get('/homepage', (req, res) => {
+    res.sendFile(__dirname+'/public' + '/homePage.html');
+});
+
+app.get('/teams', (req, res) => {
+    res.sendFile(__dirname+'/public' + '/createOrViewTeam.html');
+});
+
+app.get('/examiners', (req, res) => {
+    res.sendFile(__dirname+'/public' + '/createOrViewExaminers.html');
+});
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname+'/public' + '/index.html');
+});
