@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const routes = require("./routes");
+const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -9,35 +10,33 @@ const app = express();
 var port = 3000;
 var version = "v1";
 const tokenSecret = "wFq9+ssDbT#e2H9^";
+var decoded={};
+var token;
 
 var verifyCookie = function(req,res,next){
-    var cookieValue = req.cookie;
+    var cookieValue = req.cookies;
     if(!cookieValue){
-        //closeConnection();
-        return res.status(400).json({"error":"Cookie not provided user authorization"});
+        return res.status(400).send('<script>alert("Cookie not provided user authorization");window.location = "./"</script>');
     }
 
-    var authData = req.cookie;
-
+    var authData = req.cookies.token;
     if(authData){
         token = authData;
         try {
             decoded = jwt.verify(token, tokenSecret);
             if(!decoded || !decoded.role){
-                return res.status(400).json({"error":"user role not mentioned in token for user authorization"});
+                return res.status(400).send('<script>alert("user role not mentioned in token for user authorization");window.location = "./"</script>');
             }
             if(decoded.role!=='admin'){
-                return res.status(400).json({"error":"unauthorized user"});
+                return res.status(400).send('<script>alert("Unauthorized user");window.location = "./"</script>');
             }
             next();
           } catch(err) {
-            //closeConnection();
-            return res.status(400).json({"error":err});
+            return res.status(400).send('<script>alert("'+err.toString()+'");window.location = "./"</script>');
           }
     }
     else {
-        //closeConnection();
-        return res.status(400).json({"error":"Appropriate authentication information needs to be provided"})
+        return res.status(400).send('<script>alert("Appropriate authentication information needs to be provided");window.location = "./"</script>');
     }
 
 };
@@ -59,18 +58,18 @@ app.listen(port,()=>{
 });
 
 app.get('/homepage', verifyCookie, (req, res) => {
-    res.sendFile(__dirname+'/public' + '/homePage.html');
+    console.log('hey hye hye');
+    return res.sendFile(__dirname+'/public' + '/homePage.html');
 });
 
 app.get('/teams', verifyCookie, (req, res) => {
-    res.sendFile(__dirname+'/public' + '/createOrViewTeam.html');
+    return res.sendFile(__dirname+'/public' + '/createOrViewTeam.html');
 });
 
 app.get('/examiners', verifyCookie, (req, res) => {
-    res.sendFile(__dirname+'/public' + '/createOrViewExaminers.html');
+    return res.sendFile(__dirname+'/public' + '/createOrViewExaminers.html');
 });
 
 app.get('/', (req, res) => {
-    console.log('hello');
-    res.sendFile(__dirname+'/public' + '/index.html');
+    return res.sendFile(__dirname+'/public' + '/index.html');
 });

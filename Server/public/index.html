@@ -22,17 +22,17 @@
     <script>
 
         $(document).ready( function () {
-            if(window.localStorage.token != undefined){
-                const config = {
-                     headers: { Authorization: 'Bearer '+window.localStorage.token}
-                };
-                axios.get('http://64.227.27.167:3000/api/v1/admin/teams' , config).then(function(res){
-                    window.location = '/homepage';
-                }).catch(function(err){
-                    console.log(err);
-                    console.log("Session is expired..")
-                })
-            }
+            // if(window.localStorage.token != undefined){
+            //     const config = {
+            //          headers: { Authorization: 'Bearer '+window.localStorage.token}
+            //     };
+            //     axios.get('http://64.227.27.167:3000/api/v1/admin/teams' , config).then(function(res){
+            //         window.location = '/homepage';
+            //     }).catch(function(err){
+            //         console.log(err);
+            //         console.log("Session is expired..")
+            //     })
+            // }
         });        
 
         function checkCredentials(){
@@ -45,7 +45,8 @@
                 }
                 }).then(function(res){
                     console.log(res.data);
-                    window.localStorage.setItem('token', res.data.token)
+                    // document.cookie = "token = " +res.data.token;
+                    // window.localStorage.setItem('token', res.data.token)
                     window.location = '/homepage';
                 }).catch(err => {
                     console.log("It is coming here");
