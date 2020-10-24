@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
             GotoTeamEvaluationActivity();
         }
         ///
-        pb = findViewById(R.id.progressBar_in_teamsEvaluation);
+        pb = findViewById(R.id.progressBar_inQuestionActivity);
         login_with_password_btn = findViewById(R.id.login_with_password_btn);
         login_with_qr_btn = findViewById(R.id.scan_qr_code_btn_inMain);
-        pb_txt = findViewById(R.id.pb_txt_in_teamsEvaluation);
+        pb_txt = findViewById(R.id.pb_txt_inQuestionActivity);
 
         login_with_qr_btn.setOnClickListener(new View.OnClickListener() {
             @Override
