@@ -1,21 +1,23 @@
 package com.example.examinersapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -31,11 +33,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class QuestionsActivity extends AppCompatActivity {
+public class QuestionsActivity extends AppCompatActivity implements OptionAdapter.ToInteractWithQuestionActivty {
 
     private static final String TAG = "okay";
     TextView teamName_tv,question_tv,question_count_tv;
-    ListView options_lv;
+    RecyclerView options_rv;
+    RecyclerView.LayoutManager layoutManager;
+    OptionAdapter optionAdapter;
     Button next_btn,prev_btn;
     private SharedPreferences preferences;
     Gson gson = new Gson();
@@ -44,13 +48,10 @@ public class QuestionsActivity extends AppCompatActivity {
     ProgressBar pb;
     FrameLayout questionConatiner;
     TextView pb_txt;
-    //int no_of_Q_answered = 0;
-    int current_question_no=0;
+    int current_question_no=0; // it will the question no. displayed on the screen
     static String[]  options = {"Poor", "Fair", "Good", "Very Good", "Superior"};
     ArrayList<Boolean> isAnswered = new ArrayList<>();
-//    RecyclerView rv;
-//    QuestionAdapter rv_adapter;
-//    RecyclerView.LayoutManager rv_layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +68,13 @@ public class QuestionsActivity extends AppCompatActivity {
         questionConatiner = findViewById(R.id.question_container_inQuestionActivity);
         prev_btn = findViewById(R.id.prev_btn_inQuestionactivity);
         question_tv = findViewById(R.id.question_tv_in_questionLayout);
-        options_lv = findViewById(R.id.list_view_options_inQuestionLayout);
         question_count_tv = findViewById(R.id.question_count_tv_inQuextionActivity);
+        options_rv = findViewById(R.id.rv_options_inQuestionLayout);
+        layoutManager =  new LinearLayoutManager(this);
+        options_rv.setLayoutManager(layoutManager);
+        optionAdapter =  new OptionAdapter(this,options);
+        options_rv.setAdapter(optionAdapter);
+        optionAdapter.notifyDataSetChanged();
 
 
         //getting questions
@@ -81,71 +87,117 @@ public class QuestionsActivity extends AppCompatActivity {
         score.teamId = t._id;
 
 
-        //setting options in listview
-        ArrayAdapter<String> adapter;
-        adapter =  new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,android.R.id.text1, options);
-        options_lv.setAdapter(adapter);
-        options_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //calling animation
-                AnimateContainer();
-                Log.d(TAG, "onItemClick: clicked on=>"+options[position]);
-                //no_of_Q_answered++;
-//                isAnswered.add(current_question_no,true);
-                current_question_no++;
-                Log.d(TAG, "onClick: after option selection current question no.=>"+current_question_no);
-                //save the response in score
-                QuestionMarks qm = new QuestionMarks(current_question_no,position);
-                score.scores.add(qm);
-//                if (current_question_no>=1){
-//                    prev_btn.setVisibility(View.VISIBLE);
-//                }
-//                if (current_question_no==6){
-//                    next_btn.setText("Submit");
-//                }
-                if (current_question_no==7){
-                    Log.d(TAG, "onItemClick: score to be sent=>"+gson.toJson(score));//.toString());
-                    new SendTheEvaluation().execute(gson.toJson(score));
-                    Toast.makeText(QuestionsActivity.this, "done, good job prabhav", Toast.LENGTH_SHORT).show();
-                }else{
-                    // change to second question
-                    question_tv.setText(questions.get(current_question_no).question);
-                    question_count_tv.setText("Question "+(current_question_no+1)+" out of "+questions.size());
-                }
-
+        next_btn.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: next button clicked in question activity");
+            // if all answered then now user can submit anytime
+            if (isAnswered.get(questions.size()-1)){
+                Log.d(TAG, "you will submit score here =>"+gson.toJson(score));
+                new SendTheEvaluation().execute(gson.toJson(score));
+                //Toast.makeText(this, "you will submit result now", Toast.LENGTH_SHORT).show();
+                return;
             }
+            // call animation for taking view to left ---> nextQuestion ---> getting view from right
+            AnimateLeftNextQRight();
+            //NextQuestion();
         });
 
-//        next_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if(isAnswered.get(current_question_no)){
-//                    current_question_no++;
-//                }else{
-//                    Toast.makeText(QuestionsActivity.this, "First Answer this question", Toast.LENGTH_SHORT).show();
-//                }
-//                Log.d(TAG, "onClick: after next btn current question no.=>"+current_question_no);
-//            }
-//        });
-//
-//        prev_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                current_question_no--;
-//                if (current_question_no==0){
-//                    prev_btn.setVisibility(View.GONE);
-//                }
-//                question_tv.setText(questions.get(current_question_no).question);
-//                Log.d(TAG, "onClick: after prev btn current question no.=>"+current_question_no);
-//            }
-//        });
+        prev_btn.setOnClickListener(v -> {
+            Log.d(TAG, "onClick: previous button clicked in question activity");
+            // call animation for taking view to right ---> PreviousQuestion ---> getting view from left
+            AnimateRightPreviousQLeft();
+            //PreviousQuestion();
+        });
 
     }
 
-    private void AnimateContainer() {
-        Log.d(TAG, "AnimateContainer: current question constainer postion=>"+questionConatiner.getX());
+    private void PreviousQuestion() {
+        // as user can only use previous if he has answered the question
+        // so no need to check for going on previous question
+        current_question_no--;
+        if(current_question_no == 1){
+            //hide prev button
+            Log.d(TAG, "NextQuestion: you reached the last question");
+            prev_btn.setVisibility(View.INVISIBLE);
+        }
+        // no  matter what when you press previous you will have option to click next
+        next_btn.setVisibility(View.VISIBLE);
+        // change the question
+        if(isAnswered.get(current_question_no-1)){
+            int ans = score.scores.get(current_question_no-1).marks;
+            optionAdapter.SelectedItem(ans);
+        }
+        question_tv.setText(questions.get(current_question_no-1).question);
+        question_count_tv.setText("Question "+current_question_no+" out of "+questions.size());
+        // whenever previous is called user will not be able to submit the data
+    }
+
+    private void NextQuestion() {
+        if (!isAnswered.get(current_question_no-1)){
+            Toast.makeText(this, "first answer the current question", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(current_question_no == questions.size()){
+            Log.d(TAG, "NextQuestion: result to be sent=>"+gson.toJson(score));
+            Toast.makeText(this, "you should submit the result now", Toast.LENGTH_SHORT).show();
+            return;
+        }else if(!isAnswered.get(current_question_no)){
+            next_btn.setVisibility(View.GONE);
+        }
+        current_question_no++;
+        if(current_question_no == questions.size()){
+            Log.d(TAG, "NextQuestion: you reached the last question");
+        }else{
+            // make visible the previous button
+            prev_btn.setVisibility(View.VISIBLE);
+        }
+        // change the question
+        if(isAnswered.get(current_question_no-1)){
+            int ans = score.scores.get(current_question_no-1).marks;
+            optionAdapter.SelectedItem(ans);
+        }
+        else {
+            Log.d(TAG, "NextQuestion: selected item with -1 is called");
+            optionAdapter.SelectedItem(-1);
+        }
+        question_tv.setText(questions.get(current_question_no-1).question);
+        question_count_tv.setText("Question "+current_question_no+" out of "+questions.size());
+    }
+
+    private void AnimateRightPreviousQLeft() {
+        Log.d(TAG, "AnimateRightPreviousQLeft: called");
+        /////untill animation next and previous button and even option in rv should not be clickable
+        prev_btn.setClickable(false);
+        next_btn.setClickable(false);
+        optionAdapter.isClickable = false;
+        /////
+        Float curr_x = questionConatiner.getX();
+        int cure_width =questionConatiner.getWidth();
+        // animate till full width
+        Float animate_to_width = (float) cure_width;
+        questionConatiner.animate().x(animate_to_width+20F).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                PreviousQuestion();
+                questionConatiner.setX(-(animate_to_width+20f));
+                questionConatiner.animate().x(curr_x).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        /// after animation is finish agian buttons and option in rv are clickable
+                        prev_btn.setClickable(true);
+                        next_btn.setClickable(true);
+                        optionAdapter.isClickable = true;
+                    }
+                });
+            }
+        });
+    }
+
+    private void AnimateLeftNextQRight() {
+        Log.d(TAG, "AnimateLeftNextQRight: called");
+        /////untill animation next and previous button and even option in rv should not be clickable
+        prev_btn.setClickable(false);
+        next_btn.setClickable(false);
+        optionAdapter.isClickable = false;
+        /////
         Float curr_x = questionConatiner.getX();
         int cure_width =questionConatiner.getWidth();
         // animate till full width
@@ -153,17 +205,38 @@ public class QuestionsActivity extends AppCompatActivity {
         questionConatiner.animate().x(-animate_to_width).withEndAction(new Runnable() {
             @Override
             public void run() {
+                NextQuestion();
                 questionConatiner.setX(animate_to_width+50f);
                 questionConatiner.animate().x(curr_x).withEndAction(new Runnable() {
                     @Override
                     public void run() {
-//                        Toast.makeText(QuestionsActivity.this, "second Animation done", Toast.LENGTH_SHORT).show();
+                        /// after animation is finish agian buttons and option in rv are clickable
+                        prev_btn.setClickable(true);
+                        next_btn.setClickable(true);
+                        optionAdapter.isClickable = true;
                     }
                 });
-//                Toast.makeText(QuestionsActivity.this, "animate done", Toast.LENGTH_SHORT).show();
             }
         });
-        //questionConatiner.animate().
+    }
+
+    @Override
+    public void OnOptionSelected(int pos) {
+        Log.d(TAG, "onItemClick: clicked on=>"+options[pos]);
+        //save the response in score
+        QuestionMarks qm = new QuestionMarks(current_question_no,pos);
+        // this question should be recorded in scores at currrent_question_no -1 as scores start with 0 index
+        score.scores.set(current_question_no-1,qm);
+        // updating isAnswered varable
+        isAnswered.set(current_question_no-1,true);
+        if (isAnswered.get(questions.size()-1) && current_question_no==questions.size()){
+            next_btn.setVisibility(View.VISIBLE);
+            next_btn.setText("Submit");
+            next_btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }else{
+            //NextQuestion();
+            AnimateLeftNextQRight();
+        }
     }
 
     //get questions
@@ -217,6 +290,8 @@ public class QuestionsActivity extends AppCompatActivity {
                         JSONObject Q = Qs.getJSONObject(i);
                         Question q = gson.fromJson(Q.toString(),Question.class);
                         questions.add(q);
+                        QuestionMarks qm = new QuestionMarks(i+1,-1);
+                        score.scores.add(i,qm);
                         isAnswered.add(false); // setting that this question is not answered
                     }
                     //start showing the question
@@ -246,6 +321,7 @@ public class QuestionsActivity extends AppCompatActivity {
         questionConatiner.setVisibility(View.VISIBLE);
         question_tv.setText(questions.get(0).question);
         question_count_tv.setText("Question 1 out of "+questions.size());
+        current_question_no = 1;
     }
 
 
@@ -320,6 +396,19 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Do you want to stop Evaluation?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+        //super.onBackPressed();
+    }
 
     //class for question
     class Question{

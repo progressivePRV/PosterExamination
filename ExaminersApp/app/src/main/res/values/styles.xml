@@ -5,6 +5,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/custom_toolbar_text_color</item>
+    </style>
+
+    <style name="custom_toolbar_text_color" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="colorOnPrimary">@android:color/white</item>
     </style>
 
     <style name="txt_Size_in_camera_preview" parent="Theme.MaterialComponents.Light">

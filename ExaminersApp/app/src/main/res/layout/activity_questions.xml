@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:animateLayoutChanges="true"
     tools:context=".QuestionsActivity">
 
@@ -13,7 +12,7 @@
         style="@style/txt_Size_in_camera_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="@string/evaluatio_for_txt"
         android:textColor="@color/colorPrimaryDark"
@@ -85,6 +84,8 @@
         android:id="@+id/prev_btn_inQuestionactivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/previous"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,6 +95,8 @@
         android:id="@+id/next_btn_inQuestionactivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/next"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -104,8 +107,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:background="@color/colorPrimaryDark"
-        android:padding="3dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,16 +124,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/help_tv_in_QuestionActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="@string/help_txt_in_questionActivity"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
