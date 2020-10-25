@@ -206,3 +206,9 @@ input[type=submit]:hover {
     color: #E4EE13;
     text-decoration: underline;
 }
+
+.qrcode_image img{
+    padding: 13px;
+    border: 1px solid white;
+    background: white;
+}
