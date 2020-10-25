@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="homePage.css">
+    <link rel="stylesheet" href="css/homePage.css">
 
-    <link rel="stylesheet" type="text/css" href="datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="css/datatables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
@@ -43,12 +43,8 @@
         $(document).ready(function () {
 
             getScoreBoard().then(function (res) {
-                console.log(res.data);
+                // console.log(res.data);
                 var jsonData = res.data;
-
-                //     var jsonData = [
-                //     { "meta": { "version": 1, "type": "test" } }
-                // ];
 
                 var dt = $('#table').DataTable({
                     "scrollY": "400px",
@@ -134,9 +130,9 @@
 
         function getScoreBoard() {
             const cookieValue = document.cookie
-                                .split('; ')
-                                .find(row => row.startsWith('token'))
-                                .split('=')[1];
+                .split('; ')
+                .find(row => row.startsWith('token'))
+                .split('=')[1];
             const config = {
                 headers: { Authorization: 'Bearer ' + cookieValue }
             };
