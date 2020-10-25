@@ -34,7 +34,7 @@ public class TeamsAdapter extends RecyclerView.Adapter<TeamsAdapter.ViewHolder> 
         TeamClass t = teams.get(position);
         Log.d(TAG, "onBindViewHolder: binding teams=>" + t);
         holder.teamName.setText(t.name);
-        holder.avgScore.setText(t.averageScore);
+        holder.avgScore.setText(t.averageScore+"");
     }
 
     @Override

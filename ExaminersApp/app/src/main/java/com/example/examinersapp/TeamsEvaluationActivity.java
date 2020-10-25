@@ -10,6 +10,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +27,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -49,6 +55,25 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.team_evaluation_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logout_in_teamsEvaluation:
+                LogoutFromTheApp();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_evaluation);
@@ -56,8 +81,8 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences("TokeyKey",0);
 
         //getting varaiables
-        pb = findViewById(R.id.progressBar_in_teamsEvaluation);
-        pb_txt = findViewById(R.id.pb_txt_in_teamsEvaluation);
+        pb = findViewById(R.id.progressBar_inTeamEvaluation);
+        pb_txt = findViewById(R.id.pb_txt_inTeamEvaluation);
         avg_score_tv = findViewById(R.id.avg_score_tv_in_teamsEvaluation);
         teamName_tv = findViewById(R.id.team_names_tv_in_teamsEvaluation);
         welcome_tv = findViewById(R.id.welcom_tv_in_TeamEvaluation);
@@ -91,6 +116,7 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
         // showing progress bar
         teamName_tv.setVisibility(View.INVISIBLE);
         avg_score_tv.setVisibility(View.INVISIBLE);
+        rv.setVisibility(View.INVISIBLE);
         pb.setVisibility(View.VISIBLE);
         pb_txt.setVisibility(View.VISIBLE);
         new GetTeamsDetails(decision).execute(token);
@@ -168,6 +194,14 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                     Log.d(TAG, "onPostExecute: will parse the result for team detaisl=>"+result);
                     Type teamsType = new TypeToken<ArrayList<TeamClass>>(){}.getType();
                     teams = gson.fromJson(result, teamsType);
+                    // sort teams first
+                    Collections.sort(teams, new Comparator<TeamClass>() {
+                        @Override
+                        public int compare(TeamClass o1, TeamClass o2) {
+                            return o2.averageScore.compareTo(o1.averageScore);
+                        }
+                    });
+
                     rv_adapter =  new TeamsAdapter(teams);
                     rv.setAdapter(rv_adapter);
                 }else{
@@ -189,8 +223,17 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
             }
             teamName_tv.setVisibility(View.VISIBLE);
             avg_score_tv.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.VISIBLE);
             pb.setVisibility(View.INVISIBLE);
             pb_txt.setVisibility(View.INVISIBLE);
         }
+    }
+
+    void LogoutFromTheApp(){
+        preferences.edit().clear().commit();
+        //preferences.edit().commit();
+        Intent i =  new Intent(this,MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

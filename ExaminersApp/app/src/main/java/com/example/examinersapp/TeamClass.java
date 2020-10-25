@@ -7,7 +7,7 @@ public class TeamClass implements Serializable {
     String _id;
     String name;
     ArrayList<String> members;
-    String averageScore;
+    Float averageScore;
 
     public TeamClass() {
     }
