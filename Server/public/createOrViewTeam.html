@@ -141,7 +141,7 @@
                         }).catch(function (err) {
                             console.log(err);
                             alert("Session expired. Please Login again!");
-                            window.location = '/index.html';
+                            window.location = '/';
                         });
 
                         if (idx === -1) {
@@ -161,7 +161,7 @@
             }).catch(function (err) {
                 console.log(err);
                 alert("Session expired. Please login again!!");
-                window.location = '/index.html';
+                window.location = '/';
             });
 
         });
@@ -266,7 +266,7 @@
                 }).catch(function (err) {
                     console.log(err);
                     alert("Session expired. Please login again!!");
-                    window.location = './';
+                    window.location = '/';
                 });
             }).catch(function (err) {
                 console.log(err);
@@ -275,7 +275,7 @@
 
         function logout() {
             document.cookie = "token = ";
-            window.location = "./";
+            window.location = "/";
         }
 
     </script>

@@ -16,7 +16,7 @@ var token;
 var verifyCookie = function(req,res,next){
     var cookieValue = req.cookies;
     if(!cookieValue){
-        return res.status(400).send('<script>alert("Cookie not provided user authorization");window.location = "/index.html"</script>');
+        return res.status(400).send('<script>alert("Cookie not provided user authorization");window.location = "/"</script>');
     }
 
     var authData = req.cookies.token;
@@ -25,14 +25,14 @@ var verifyCookie = function(req,res,next){
         try {
             decoded = jwt.verify(token, tokenSecret);
             if(!decoded || !decoded.role){
-                return res.status(400).send('<script>alert("user role not mentioned in token for user authorization");window.location = "/index.html"</script>');
+                return res.status(400).send('<script>alert("user role not mentioned in token for user authorization");window.location = "/"</script>');
             }
             if(decoded.role!=='admin'){
-                return res.status(400).send('<script>alert("Unauthorized user");window.location = "/index.html"</script>');
+                return res.status(400).send('<script>alert("Unauthorized user");window.location = "/"</script>');
             }
             next();
           } catch(err) {
-            return res.status(400).send('<script>alert("'+err.toString()+'");window.location = "/index.html"</script>');
+            return res.status(400).send('<script>alert("'+err.toString()+'");window.location = "/"</script>');
           }
     }
     else {

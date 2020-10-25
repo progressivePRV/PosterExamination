@@ -110,7 +110,7 @@
             }).catch(function (err) {
                 console.log(err);
                 alert("Session expired. Please login again!!");
-                window.location = './';
+                window.location = '/';
             });
         });
 
@@ -141,7 +141,7 @@
 
         function logout() {
             document.cookie = "token = ";
-            window.location = "./";
+            window.location = "/";
         }
 
     </script>
