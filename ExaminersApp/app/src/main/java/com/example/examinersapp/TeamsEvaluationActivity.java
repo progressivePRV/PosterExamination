@@ -79,6 +79,7 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_teams_evaluation);
 
         preferences = getApplicationContext().getSharedPreferences("TokeyKey",0);
+        setTitle("Score Board");
 
         //getting varaiables
         pb = findViewById(R.id.progressBar_inTeamEvaluation);
@@ -135,6 +136,9 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
         }else if(REQUEST_CODE_FOR_QUESTION_ACTIVITY == requestCode && resultCode == RESULT_OK){
             //get all team details as it got updated for a team
             CallingGetTeamDetails(GET_ALL_TEAM,"");
+        }else if (REQUEST_CODE_FOR_QUESTION_ACTIVITY == requestCode && resultCode == RESULT_CANCELED){
+            Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
+            LogoutFromTheApp();
         }
     }
 
@@ -215,8 +219,19 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                 try {
                     JSONObject root =  new JSONObject(result);
                     String er = root.getString("error");
+                    if (root.has("errorOn")){
+                        Toast.makeText(TeamsEvaluationActivity.this, "Team QR-code expired", Toast.LENGTH_SHORT).show();
+                    }else{
+                        JSONObject error = root.getJSONObject("error");
+                        String errorName = error.getString("name");
+                        if (errorName.contains("TokenExpired")){
+                            Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
+                            LogoutFromTheApp();
+                        }
+                        Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
+                    }
                     Log.d(TAG, "onPostExecute: error in getting team=>"+er);
-                    Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

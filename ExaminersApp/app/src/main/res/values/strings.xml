@@ -17,4 +17,7 @@
     <string name="submit_the_score_txt">Submit the Score</string>
     <string name="help_txt_in_questionActivity">As soon as you give your feedback for last question your evaluation will be submitted</string>
     <string name="logout">Logout</string>
+    <string name="Email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 </resources>

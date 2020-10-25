@@ -2,6 +2,7 @@ package com.example.examinersapp;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,10 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor prefEditor;
     ProgressBar pb;
+    TextInputLayout email_TIL,password_TIL;
+    TextInputEditText email_TIET,password_TIET;
+    MaterialButton login_btn;
     Button login_with_qr_btn;
     Button login_with_password_btn;
     TextView pb_txt;
+    MotionLayout motionLayout;
     private static String PASSWORD_LOGIN="PASSWORD";
     private static String QR_CODE_LOGIN="QR_CODE";
 
@@ -44,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setTitle("Login");
 
         preferences = getApplicationContext().getSharedPreferences("TokeyKey",0);
         prefEditor = preferences.edit();
@@ -53,10 +64,22 @@ public class MainActivity extends AppCompatActivity {
             GotoTeamEvaluationActivity();
         }
         ///
+        email_TIET = findViewById(R.id.email_TIET);
+        password_TIET = findViewById(R.id.password_TIET);
+        email_TIL = findViewById(R.id.email_TIL);
+        password_TIL = findViewById(R.id.password_TIL);
+        login_btn = findViewById(R.id.login_button);
         pb = findViewById(R.id.progressBar_inQuestionActivity);
         login_with_password_btn = findViewById(R.id.login_with_password_btn);
         login_with_qr_btn = findViewById(R.id.scan_qr_code_btn_inMain);
         pb_txt = findViewById(R.id.pb_txt_inQuestionActivity);
+        motionLayout = findViewById(R.id.motionLayout_inMain);
+
+        //setting same height width for both buttons
+        int height = login_with_qr_btn.getHeight();
+        login_with_password_btn.setHeight(height);
+        int width = login_with_qr_btn.getWidth();
+        login_with_password_btn.setWidth(width);
 
         login_with_qr_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +89,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        login_with_password_btn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(CheckIfEmailAndPasswordAreEmpty()){
+                    String emailText = email_TIET.getText().toString().trim();
+                    String passwordText = password_TIET.getText().toString().trim();
+                    Log.d(TAG,emailText+" "+passwordText);
+                    Log.d(TAG, "onClick: calling async");
+                    new ExaminerLogin().execute(PASSWORD_LOGIN,emailText, passwordText);
+                }
             }
         });
+
+//        login_with_password_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                Intent i =  new Intent(MainActivity.this,PasswordLogin.class);
+////                startActivityForResult(i,REQUEST_CODE_FOR_PasswordLogin);
+//            }
+//        });
 
     }
 
@@ -87,10 +124,6 @@ public class MainActivity extends AppCompatActivity {
             String result = data.getStringExtra("result");
             Log.d(TAG, "onActivityResult: what i got in result=>"+result);
             // call login here
-            pb.setVisibility(View.VISIBLE);
-            login_with_password_btn.setVisibility(View.GONE);
-            login_with_qr_btn.setVisibility(View.GONE);
-            pb_txt.setVisibility(View.VISIBLE);
             new ExaminerLogin().execute(QR_CODE_LOGIN,result);
         }
         else if (requestCode == REQUEST_CODE_FOR_QRCODE_DETECTOR && resultCode == RESULT_CANCELED){
@@ -100,9 +133,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private boolean CheckIfEmailAndPasswordAreEmpty() {
+        if(email_TIET.getText().toString().equals("")){
+            email_TIL.setError("Cannot be empty");
+            return false;
+        }else{
+            email_TIL.setError("");
+        }
+        if(password_TIET.getText().toString().equals("")){
+            password_TIL.setError("Cannot be empty");
+            return false;
+        }else{
+            password_TIL.setError("");
+        }
+        return true;
+    }
+
     class ExaminerLogin extends AsyncTask<String, Void, String >{
 
         String result = "",error = "";
+
+        @Override
+        protected void onPreExecute() {
+            if (motionLayout.getCurrentState() == R.id.start){
+                pb.setVisibility(View.VISIBLE);
+                login_with_password_btn.setVisibility(View.GONE);
+                login_with_qr_btn.setVisibility(View.GONE);
+                pb_txt.setVisibility(View.VISIBLE);
+            }else if (motionLayout.getCurrentState() == R.id.end){
+                pb_txt.setVisibility(View.VISIBLE);
+                pb.setVisibility(View.VISIBLE);
+                email_TIL.setVisibility(View.INVISIBLE);
+                password_TIL.setVisibility(View.INVISIBLE);
+                login_btn.setVisibility(View.INVISIBLE);
+            }
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -162,7 +227,8 @@ public class MainActivity extends AppCompatActivity {
                     String role = root.getString("role");
                     if(!role.equals("examiner")){
                         Toast.makeText(MainActivity.this, "other than examiner no one is allowed in the App", Toast.LENGTH_SHORT).show();
-                        finish();
+                        return;
+                        //finish();
                     }
                     prefEditor.putString(TOKEN_KEY_FOR_PREFERENCE,root.getString("token"));
                     prefEditor.putString(EXAMINER_KEY_FOR_PREFERENCE,result);
@@ -180,16 +246,35 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject root =  new JSONObject(result);
                     String er = root.getString("error");
-                    Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
+                    if(er.contains("ReferenceError")){
+                        Toast.makeText(MainActivity.this, "QR-code expired", Toast.LENGTH_SHORT).show();
+                    }
+                    //Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            pb.setVisibility(View.GONE);
-            login_with_qr_btn.setVisibility(View.VISIBLE);
-            login_with_password_btn.setVisibility(View.VISIBLE);
-            pb_txt.setVisibility(View.GONE);
-            //ReferenceError: res is not defined
+            if (motionLayout.getCurrentState() == R.id.start){
+                pb.setVisibility(View.INVISIBLE);
+                login_with_password_btn.setVisibility(View.VISIBLE);
+                login_with_qr_btn.setVisibility(View.VISIBLE);
+                pb_txt.setVisibility(View.INVISIBLE);
+            }else if (motionLayout.getCurrentState() == R.id.end){
+                pb_txt.setVisibility(View.INVISIBLE);
+                pb.setVisibility(View.INVISIBLE);
+                email_TIL.setVisibility(View.VISIBLE);
+                password_TIL.setVisibility(View.VISIBLE);
+                login_btn.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (R.id.end == motionLayout.getCurrentState()){
+            motionLayout.transitionToStart();
+        }else {
+            super.onBackPressed();
         }
     }
 }

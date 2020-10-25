@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,6 +60,7 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
         setContentView(R.layout.activity_questions);
 
         preferences = getApplicationContext().getSharedPreferences("TokeyKey",0);
+        setTitle("Team Evaluation");
 
         //getting varlables
         teamName_tv = findViewById(R.id.team_name_in_QuestionActivity);
@@ -90,7 +92,7 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
         next_btn.setOnClickListener(v -> {
             Log.d(TAG, "onClick: next button clicked in question activity");
             // if all answered then now user can submit anytime
-            if (isAnswered.get(questions.size()-1)){
+            if (isAnswered.get(questions.size()-1)  && current_question_no == questions.size()){
                 Log.d(TAG, "you will submit score here =>"+gson.toJson(score));
                 new SendTheEvaluation().execute(gson.toJson(score));
                 //Toast.makeText(this, "you will submit result now", Toast.LENGTH_SHORT).show();
@@ -118,6 +120,9 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             //hide prev button
             Log.d(TAG, "NextQuestion: you reached the last question");
             prev_btn.setVisibility(View.INVISIBLE);
+        }else {
+            next_btn.setText("Next");
+            next_btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         // no  matter what when you press previous you will have option to click next
         next_btn.setVisibility(View.VISIBLE);
@@ -141,6 +146,9 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             return;
         }else if(!isAnswered.get(current_question_no)){
             next_btn.setVisibility(View.GONE);
+        } else if (isAnswered.get(current_question_no-1) && current_question_no == questions.size()-1 ){
+            next_btn.setText("Submit");
+            next_btn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
         current_question_no++;
         if(current_question_no == questions.size()){
@@ -268,7 +276,7 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             } catch (IOException e) {
                 e.printStackTrace();
                 error = result;
-                Log.d(TAG, "doInBackground: error in geting teams detail=>"+e.getMessage());
+                Log.d(TAG, "doInBackground: error in getting questions=>"+e.getMessage());
             }
             return null;
         }
@@ -306,8 +314,14 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                 try {
                     JSONObject root =  new JSONObject(result);
                     String er = root.getString("error");
+                    JSONObject error = root.getJSONObject("error");
+                    String errorName = error.getString("name");
+                    if (errorName.contains("TokenExpired")){
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
                     Log.d(TAG, "onPostExecute: error in getting questions=>"+er);
-                    Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -385,6 +399,13 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                     JSONObject root =  new JSONObject(result);
                     String er = root.getString("error");
                     Log.d(TAG, "onPostExecute: error in sending scores=>"+er);
+                    JSONObject error = root.getJSONObject("error");
+                    String errorName = error.getString("name");
+                    if (errorName.contains("TokenExpired")){
+                        Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
+                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
+                        startActivity(i);
+                    }
                     Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -392,6 +413,7 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             }
             pb.setVisibility(View.INVISIBLE);
             pb_txt.setVisibility(View.INVISIBLE);
+            questionConatiner.setVisibility(View.VISIBLE);
             //rv.setVisibility(View.VISIBLE);
         }
     }

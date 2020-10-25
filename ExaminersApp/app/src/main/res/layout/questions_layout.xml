@@ -12,7 +12,9 @@
         style="@style/txt_Size_in_camera_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,10 +22,19 @@
         android:id="@+id/rv_options_inQuestionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/question_tv_in_questionLayout" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/rv_options_inQuestionLayout"
+        app:layout_constraintEnd_toEndOf="@+id/rv_options_inQuestionLayout"
+        app:layout_constraintStart_toStartOf="@+id/rv_options_inQuestionLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
