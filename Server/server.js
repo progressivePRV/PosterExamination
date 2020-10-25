@@ -36,7 +36,7 @@ var verifyCookie = function(req,res,next){
           }
     }
     else {
-        return res.status(400).send('<script>alert("Appropriate authentication information needs to be provided");window.location = "/index.html"</script>');
+        return res.status(400).send('<script>alert("Appropriate authentication information needs to be provided");window.location = "/"</script>');
     }
 
 };
