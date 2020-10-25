@@ -200,3 +200,9 @@ input[type=submit]:hover {
   border-right: 1px solid white;
   border-top: 1px solid white;
 }
+
+.qrcode_details{
+    cursor: pointer;
+    color: #E4EE13;
+    text-decoration: underline;
+}
