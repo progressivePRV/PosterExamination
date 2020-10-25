@@ -433,7 +433,7 @@ route.get('/examiner/teams',[
             query._id=mongo.ObjectID(decodedToken.id);
         }catch(error){
             closeConnection();
-            return response.status(400).json({"error":error.toString()});
+            return response.status(400).json({"error":error.toString(),"errorOn":"team"});
         }
     }
 
