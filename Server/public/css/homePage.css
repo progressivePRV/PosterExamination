@@ -29,11 +29,11 @@ body{
     }
   }
 td.details-control {
-    background: url('./details_open.png') no-repeat center center;
+    background: url('../images/details_open.png') no-repeat center center;
     cursor: pointer;
 }
 tr.details td.details-control {
-    background: url('./details_close.png') no-repeat center center;
+    background: url('../images/details_close.png') no-repeat center center;
 }
 
 .table_area{
@@ -199,4 +199,16 @@ input[type=submit]:hover {
 #table tr th{
   border-right: 1px solid white;
   border-top: 1px solid white;
+}
+
+.qrcode_details{
+    cursor: pointer;
+    color: #E4EE13;
+    text-decoration: underline;
+}
+
+.qrcode_image img{
+    padding: 13px;
+    border: 1px solid white;
+    background: white;
 }

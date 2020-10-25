@@ -1,154 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/View Examiners</title>
-    <link rel="stylesheet" href="homePage.css">
-    <link rel="stylesheet" type="text/css" href="datatables.min.css">
+    <link rel="stylesheet" href="css/homePage.css">
+    <link rel="stylesheet" type="text/css" href="css/datatables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
+
 <body>
     <header>
         <div class="navbar">
-            <a href="homepage"><i class="fa fa-fw fa-home"></i> Home</a> 
+            <a href="homepage"><i class="fa fa-fw fa-home"></i> Home</a>
             <a href="teams"><i class="fa fa-fw fa-user"></i> Create/View Team</a>
-            <a class="active"><i class="fa fa-fw fa-search"></i> Create/View Examiners</a> 
-            <a onclick = "logout()" style="float: right;"><i class="fa fa-fw fa-home"></i>Logout</a> 
-          </div>
-     </header>
+            <a class="active"><i class="fa fa-fw fa-search"></i> Create/View Examiners</a>
+            <a onclick="logout()" style="float: right;"><i class="fa fa-fw fa-home"></i>Logout</a>
+        </div>
+    </header>
 
-     <div class="createTeamDiv" style="display: flex;">
+    <div class="createTeamDiv" style="display: flex;">
         <div class="form-area">
-            <!-- <form> -->
-             <!-- <label style = "text-align: center;"> Create New Examiner </label> -->
-             <input type="text" id="examinerFirstName" name="examinerFirstName" placeholder="Enter Examiner First Name.." required>
-             
-             <input type="text" id="examinerLastName" name="examinerLastName" placeholder="Enter Examiner Last Name.." required>
-              
-             <input type="text" id="examinerEmail" name="s3Name" placeholder="Enter Examiner Email.." required>      
-             
-             <input type="password" id="examinerPassword" name="s3Name" placeholder="Enter Examiner Password.." required>   
-   
-             <input type="submit" value="Create New Examiner" onclick="createExaminer()">
-           <!-- </form> -->
-         </div>
+            <form action="javascript:void(0);" onsubmit="createExaminer()">
+                <!-- <label style = "text-align: center;"> Create New Examiner </label> -->
+                <input type="text" id="examinerFirstName" name="examinerFirstName"
+                    placeholder="Enter Examiner First Name.." required>
 
-    <div class="table_area">
-        <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-                <th>Examiners First Name</th>
-                <th>Examiners Last Name</th>
-                <th>Examiners Email</th>
-            </thead>
-    </table>
+                <input type="text" id="examinerLastName" name="examinerLastName"
+                    placeholder="Enter Examiner Last Name.." required>
 
-    <!-- JS SCRIPT -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js" integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg==" crossorigin="anonymous"></script>
+                <input type="text" id="examinerEmail" name="s3Name" placeholder="Enter Examiner Email.." required>
 
-<script>
-    $(document).ready( function () {
+                <input type="password" id="examinerPassword" name="s3Name" placeholder="Enter Examiner Password.."
+                    required>
 
-        checkValidToken().then(function(res){
-            console.log(res.data);
-            var examinerData = res.data.examiners;
+                <input type="submit" value="Create New Examiner">
+            </form>
+        </div>
 
-            var dt = $('#table').DataTable({
-                "scrollY": "400px",
-                 "scrollCollapse": true,
-                "data": examinerData,
-                "columns": [
-             
-                { "data": "firstName",
-                "class":  "border_class", },
-                { "data": "lastName" },
-                { "data": "email" }
-            ],
-            "columnDefs": [
-    {"className": "dt-center", "targets": "_all"}
-  ]
-        });
-    }).catch(function(err){
-        console.log(err);
-        alert("Session expired. Please login again!!");
-        window.location = '/index.html';
-    });
-});
+        <div class="table_area">
+            <table id="table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <th style="color: white; text-decoration: none;">QR code</th>
+                    <th>Examiners First Name</th>
+                    <th>Examiners Last Name</th>
+                    <th>Examiners Email</th>
+                </thead>
+            </table>
 
-function checkValidToken(){
-        const config = {
-            headers: { Authorization: 'Bearer '+window.localStorage.token}
-        };
-        return axios.get('http://64.227.27.167:3000/api/v1/admin/examiners' , config);
-    }
+            <!-- JS SCRIPT -->
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+                type="text/javascript"></script>
+            <script type="text/javascript" charset="utf8"
+                src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
+                integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
+                crossorigin="anonymous"></script>
+            <script type="text/javascript" src="js/qrcode.js"></script>
 
-    function createExaminer(){
-        
-        var examinerFirstName = $('#examinerFirstName').val();
-        var examinerLastName = $('#examinerLastName').val();
-        var examinerEmail = $('#examinerEmail').val();
-        var examinerPassword = $('#examinerPassword').val();
+            <script>
+                $(document).ready(function () {
 
-        const config = {
-            headers: { Authorization: 'Bearer '+window.localStorage.token},
-            
-        };
+                    getExaminers().then(function (res) {
+                        // console.log(res.data);
+                        var examinerData = res.data.examiners;
 
-        const data = {
-                "firstName": examinerFirstName,
-                "lastName": examinerLastName,
-                "email": examinerEmail,
-                "password": examinerPassword
-            };
-        axios.post('http://64.227.27.167:3000/api/v1/admin/examiners' , data, config 
-        ).then(function(res){
-            // console.log("hey it is working")
-           $('#examinerFirstName').val('');
-           $('#examinerLastName').val('');
-           $('#examinerEmail').val('');
-           $('#examinerPassword').val('');
-            alert("Examiner Successfully Created");
-            checkValidToken().then(function(res){
-            console.log(res.data);
-            var examinerData = res.data.examiners;
+                        var dt = $('#table').DataTable({
+                            "scrollY": "400px",
+                            "scrollCollapse": true,
+                            "data": examinerData,
+                            "columns": [
+                                {
+                                    "class": "qrcode_details",
+                                    "orderable": false,
+                                    "data": "",
+                                    "defaultContent": "Get QR Code"
+                                },
+                                {
+                                    "data": "firstName",
+                                    "class": "border_class",
+                                },
+                                { "data": "lastName" },
+                                { "data": "email" }
+                            ],
+                            "columnDefs": [
+                                { "className": "dt-center", "targets": "_all" }
+                            ]
+                        });
 
-            $("#table").dataTable().fnDestroy()
+                        // Array to track the ids of the details displayed rows
+                        var detailRows = [];
 
-            var dt = $('#table').DataTable({
-                "scrollY": "400px",
-                 "scrollCollapse": true,
-                "data": examinerData,
-                "columns": [
-             
-                { "data": "firstName" },
-                { "data": "lastName" },
-                { "data": "email" }
-            ],
-            "columnDefs": [
-    {"className": "dt-center", "targets": "_all"}
-  ]
-        });
+                        $('#table tbody').on('click', 'tr td.qrcode_details', function () {
+                            var tr = $(this).closest('tr');
+                            var row = dt.row(tr);
+                            //get the row index so that we can get the examiner details
+                            var index = row[0][0];
+                            console.log(row[0][0]);
 
-       
-    }).catch(function(err){
-        console.log(err);
-        alert("Session expired. Please login again!!");
-        window.location = './';
-    });
-        }).catch(function(err){
-            console.log(err);
-        });
-    }
+                            var idx = $.inArray(tr.attr('id'), detailRows);
 
-    function logout(){
-        window.localStorage.clear();
-        // alert("Logged out successfully!");
-        window.location = "./";
-    }
-    </script>
+                            if (row.child.isShown()) {
+                                tr.removeClass('details');
+                                row.child.hide();
+                                detailRows.splice(idx, 1);
+                            }
+                            else {
+                                tr.addClass('details');
+                                row.child('<div class="qrcode_image" id="qrcode_' + index + '"style="width:200; height:200; "></div>').show();
+                                getQrcodeToken(row.data()._id).then(function (res) {
+                                    var qrcode = new QRCode(document.getElementById("qrcode_" + index), {
+                                        width: 200,
+                                        height: 200
+                                    });
+                                    qrcode.makeCode(res.data.qrToken);
+                                }).catch(function (err) {
+                                    console.log(err);
+                                    alert("Session expired. Please Login again!");
+                                    window.location = '/';
+                                });
 
+                                if (idx === -1) {
+                                    detailRows.push(tr.attr('id'));
+                                }
+                            }
+                        });
+
+                        // On each draw, loop over the `detailRows` array and show any child rows
+                        dt.on('draw', function () {
+                            $.each(detailRows, function (i, id) {
+                                $('#' + id + ' td.details-control').trigger('click');
+                            });
+                        });
+                    }).catch(function (err) {
+                        console.log(err);
+                        alert("Session expired. Please login again!!");
+                        // window.location = '/index.html';
+                    });
+                });
+
+                function getExaminers() {
+                    var cookieValue = document.cookie
+                        .split('; ')
+                        .find(row => row.startsWith('token'))
+                        .split('=')[1];
+                    const config = {
+                        headers: { Authorization: 'Bearer ' + cookieValue }
+                    };
+                    return axios.get('http://64.227.27.167:3000/api/v1/admin/examiners', config);
+                }
+
+                function createExaminer() {
+                    var cookieValue = document.cookie
+                        .split('; ')
+                        .find(row => row.startsWith('token'))
+                        .split('=')[1];
+
+                    var examinerFirstName = $('#examinerFirstName').val();
+                    var examinerLastName = $('#examinerLastName').val();
+                    var examinerEmail = $('#examinerEmail').val();
+                    var examinerPassword = $('#examinerPassword').val();
+
+                    const config = {
+                        headers: { Authorization: 'Bearer ' + cookieValue },
+
+                    };
+
+                    const data = {
+                        "firstName": examinerFirstName,
+                        "lastName": examinerLastName,
+                        "email": examinerEmail,
+                        "password": examinerPassword
+                    };
+                    axios.post('http://64.227.27.167:3000/api/v1/admin/examiners', data, config
+                    ).then(function (res) {
+                        // console.log("hey it is working")
+                        $('#examinerFirstName').val('');
+                        $('#examinerLastName').val('');
+                        $('#examinerEmail').val('');
+                        $('#examinerPassword').val('');
+                        alert("Examiner Successfully Created");
+                        getExaminers().then(function (res) {
+                            // console.log(res.data);
+                            var examinerData = res.data.examiners;
+
+                            $("#table").dataTable().fnDestroy()
+
+                            var dt = $('#table').DataTable({
+                                "scrollY": "400px",
+                                "scrollCollapse": true,
+                                "data": examinerData,
+                                "columns": [
+
+                                    { "data": "firstName" },
+                                    { "data": "lastName" },
+                                    { "data": "email" }
+                                ],
+                                "columnDefs": [
+                                    { "className": "dt-center", "targets": "_all" }
+                                ]
+                            });
+
+
+                        }).catch(function (err) {
+                            console.log(err);
+                            alert("Session expired. Please login again!!");
+                            window.location = '/';
+                        });
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
+                }
+
+                function getQrcodeToken(examinerId) {
+                    var cookieValue = document.cookie
+                        .split('; ')
+                        .find(row => row.startsWith('token'))
+                        .split('=')[1];
+                    const config = {
+                        headers: { Authorization: 'Bearer ' + cookieValue }
+                    };
+                    return axios.get('http://64.227.27.167:3000/api/v1/admin/examiners/' + examinerId + '/qrToken', config);
+                }
+
+                function logout() {
+                    document.cookie = "token = ";
+                    window.location = "/";
+                }
+            </script>
 </body>
+
 </html>
