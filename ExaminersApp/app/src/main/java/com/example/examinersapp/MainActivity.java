@@ -248,8 +248,9 @@ public class MainActivity extends AppCompatActivity {
                     String er = root.getString("error");
                     if(er.contains("ReferenceError")){
                         Toast.makeText(MainActivity.this, "QR-code expired", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
                     }
-                    //Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

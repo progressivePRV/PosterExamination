@@ -227,8 +227,9 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                         if (errorName.contains("TokenExpired")){
                             Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
                             LogoutFromTheApp();
+                        }else{
+                            Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
                     }
                     Log.d(TAG, "onPostExecute: error in getting team=>"+er);
 
