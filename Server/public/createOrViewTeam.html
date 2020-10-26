@@ -29,32 +29,33 @@
                 <div style="display:flex">
                     <input type="text" id="s1Name" name="s1Name" placeholder="Enter Student 1 name.." required>
                     <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add1"
-                        onclick="add('studentTwo','add1','')">+</button>
+                        onclick="add('studentTwo','add1','','s2Name')">+</button>
                 </div>
 
                 <div class="studentTwo">
-                    <input type="text" id="s2Name" name="s2Name" placeholder="Enter Student 2 name.." required>
+                    <input type="text" id="s2Name" name="s2Name" placeholder="Enter Student 2 name..">
                     <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add2"
-                        onclick="add('studentThree','add2','remove2')">+</button>
+                        onclick="add('studentThree','add2','remove2','s3Name')">+</button>
                     <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove2"
-                        onclick="remove('studentTwo','add1','')">-</button>
+                        onclick="remove('studentTwo','add1','','s2Name')">-</button>
                 </div>
 
                 <div class="studentThree">
-                    <input type="text" id="s3Name" name="s3Name" placeholder="Enter Student 3 name.." required>
+                    <input type="text" id="s3Name" name="s3Name" placeholder="Enter Student 3 name..">
                     <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add3"
-                        onclick="add('studentFour','add3','remove3')">+</button>
+                        onclick="add('studentFour','add3','remove3','s4Name')">+</button>
                     <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove3"
-                        onclick="remove('studentThree','add2','remove2' )">-</button>
+                        onclick="remove('studentThree','add2','remove2','s3Name')">-</button>
                 </div>
 
                 <div class="studentFour">
-                    <input type="text" id="s4Name" name="s4Name" placeholder="Enter Student 4 name.." required>
+                    <input type="text" id="s4Name" name="s4Name" placeholder="Enter Student 4 name..">
                     <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove4"
-                        onclick="remove('studentFour','add3','remove3')">-</button>
+                        onclick="remove('studentFour','add3','remove3','s4Name')">-</button>
                 </div>
 
-                <input type="submit" value="Create New Team">
+                <button type="submit" id="submit_button">Create New Team</button>
+                <!-- <input type="submit" value="Create New Team"> -->
             </form>
         </div>
 
@@ -86,7 +87,6 @@
             getTeams().then(function (res) {
                 // console.log(res.data);
                 var jsonData = res.data;
-
                 var dt = $('#table').DataTable({
                     "scrollY": "400px",
                     "scrollCollapse": true,
@@ -189,17 +189,20 @@
             return axios.get('http://64.227.27.167:3000/api/v1/admin/teams', config);
         }
 
-        function add(fieldValue, buttonValue, buttonRemoveValue) {
+        function add(fieldValue, buttonValue, buttonRemoveValue, requiredField) {
             $('.' + fieldValue).val('');
             $('.' + fieldValue).css('display', 'flex');
+            console.log(document.getElementById(requiredField));
+            document.getElementById(requiredField).required = true;
             $('#' + buttonValue).css('display', 'none');
             if (buttonRemoveValue != '') {
                 $('#' + buttonRemoveValue).css('display', 'none');
             }
         }
 
-        function remove(fieldValue, buttonValue, buttonRemoveValue) {
+        function remove(fieldValue, buttonValue, buttonRemoveValue, requiredField) {
             $('.' + fieldValue).val('');
+            document.getElementById(requiredField).required = false;
             $('.' + fieldValue).css('display', 'none');
             $('#' + buttonValue).css('display', '');
             if (buttonRemoveValue != '') {
@@ -208,6 +211,7 @@
         }
 
         function createTeam() {
+            console.log("hello checking if it is even coming here");
             var cookieValue = document.cookie
                 .split('; ')
                 .find(row => row.startsWith('token'))
@@ -221,9 +225,11 @@
 
             if (stu2 != undefined && stu2 != '') {
                 stu1 += ', ' + stu2;
-            } else if (stu3 != undefined && stu3 != '') {
+            }
+            if (stu3 != undefined && stu3 != '') {
                 stu1 += ', ' + stu3;
-            } else if (stu4 != undefined && stu4 != '') {
+            }
+            if (stu4 != undefined && stu4 != '') {
                 stu1 += ', ' + stu4;
             }
 
@@ -238,38 +244,18 @@
             };
             axios.post('http://64.227.27.167:3000/api/v1/admin/teams', data, config
             ).then(function (res) {
-                // console.log("hey it is working")
+                console.log(res)
                 $('#tname').val('');
                 $('#s1Name').val('');
                 $('#s2Name').val('');
                 $('#s3Name').val('');
                 $('#s4Name').val('');
-                alert("Team Successfully Created");
-                getTeams().then(function (res) {
-                    console.log(res.data);
-                    var jsonData = res.data;
-
-                    $("#table").dataTable().fnDestroy()
-
-                    var dt = $('#table').DataTable({
-                        "processing": true,
-                        "data": jsonData,
-                        "columns": [
-
-                            { "data": "name" },
-                            { "data": "members" }
-                        ],
-                        "columnDefs": [
-                            { "className": "dt-center", "targets": "_all" }
-                        ]
-                    });
-                }).catch(function (err) {
-                    console.log(err);
-                    alert("Session expired. Please login again!!");
-                    window.location = '/';
-                });
+                alert("Team Successfully Created. Page will now be reloaded.");
+                location.reload();
             }).catch(function (err) {
                 console.log(err);
+                alert("Session expired. Please login again!!");
+                window.location = '/';
             });
         }
 

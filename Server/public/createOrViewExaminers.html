@@ -36,7 +36,7 @@
                 <input type="password" id="examinerPassword" name="s3Name" placeholder="Enter Examiner Password.."
                     required>
 
-                <input type="submit" value="Create New Examiner">
+                <button type="submit" id="submit_button">Create New Examiner</button>
             </form>
         </div>
 
@@ -66,7 +66,6 @@
                     getExaminers().then(function (res) {
                         // console.log(res.data);
                         var examinerData = res.data.examiners;
-
                         var dt = $('#table').DataTable({
                             "scrollY": "400px",
                             "scrollCollapse": true,
@@ -137,7 +136,7 @@
                     }).catch(function (err) {
                         console.log(err);
                         alert("Session expired. Please login again!!");
-                        // window.location = '/index.html';
+                        window.location = '/index.html';
                     });
                 });
 
@@ -181,36 +180,17 @@
                         $('#examinerLastName').val('');
                         $('#examinerEmail').val('');
                         $('#examinerPassword').val('');
-                        alert("Examiner Successfully Created");
-                        getExaminers().then(function (res) {
-                            // console.log(res.data);
-                            var examinerData = res.data.examiners;
-
-                            $("#table").dataTable().fnDestroy()
-
-                            var dt = $('#table').DataTable({
-                                "scrollY": "400px",
-                                "scrollCollapse": true,
-                                "data": examinerData,
-                                "columns": [
-
-                                    { "data": "firstName" },
-                                    { "data": "lastName" },
-                                    { "data": "email" }
-                                ],
-                                "columnDefs": [
-                                    { "className": "dt-center", "targets": "_all" }
-                                ]
-                            });
-
-
-                        }).catch(function (err) {
-                            console.log(err);
+                        alert("Examiner Successfully Created. Page will now be reloaded.");
+                        location.reload();
+                    }).catch(function (err) {
+                        if(err.response.data.error.errors == undefined){
+                            alert("Email already exsits. Please provide another email")
+                        }else if(err.response.data.error.errors != undefined){
+                            alert(err.response.data.error.errors[0].msg);
+                        }else{
                             alert("Session expired. Please login again!!");
                             window.location = '/';
-                        });
-                    }).catch(function (err) {
-                        console.log(err);
+                        }
                     });
                 }
 
