@@ -28,29 +28,29 @@
 
                 <div style="display:flex">
                     <input type="text" id="s1Name" name="s1Name" placeholder="Enter Student 1 name.." required>
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add1"
+                    <button  type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add1"
                         onclick="add('studentTwo','add1','','s2Name')">+</button>
                 </div>
 
                 <div class="studentTwo">
                     <input type="text" id="s2Name" name="s2Name" placeholder="Enter Student 2 name..">
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add2"
+                    <button  type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add2"
                         onclick="add('studentThree','add2','remove2','s3Name')">+</button>
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove2"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove2"
                         onclick="remove('studentTwo','add1','','s2Name')">-</button>
                 </div>
 
                 <div class="studentThree">
                     <input type="text" id="s3Name" name="s3Name" placeholder="Enter Student 3 name..">
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add3"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add3"
                         onclick="add('studentFour','add3','remove3','s4Name')">+</button>
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove3"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove3"
                         onclick="remove('studentThree','add2','remove2','s3Name')">-</button>
                 </div>
 
                 <div class="studentFour">
                     <input type="text" id="s4Name" name="s4Name" placeholder="Enter Student 4 name..">
-                    <button class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove4"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove4"
                         onclick="remove('studentFour','add3','remove3','s4Name')">-</button>
                 </div>
 
