@@ -287,7 +287,8 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             if (error.isEmpty() && result.isEmpty()){
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(QuestionsActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
-                return;
+                finish();
+                //return;
             }
             if(error.isEmpty()) {
                 // parse the result
@@ -385,7 +386,7 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             if (error.isEmpty() && result.isEmpty()){
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(QuestionsActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
-                return;
+                // return;
             }
             if(error.isEmpty()) {
                 // parse the result
@@ -401,12 +402,18 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                     Log.d(TAG, "onPostExecute: error in sending scores=>"+er);
                     JSONObject error = root.getJSONObject("error");
                     String errorName = error.getString("name");
+                    Log.d(TAG, "onPostExecute: before checking for token expired string");
                     if (errorName.contains("TokenExpired")){
+                        Log.d(TAG, "onPostExecute: token expired check pass");
                         Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
-                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
-                        startActivity(i);
+//                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
+//                        i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
+//                        Log.d(TAG, "onPostExecute: set just for login true");
+//                        preferences.edit().clear().commit();
+//                        startActivity(i);
+                    }else{
+                        Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -414,7 +421,6 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
             pb.setVisibility(View.INVISIBLE);
             pb_txt.setVisibility(View.INVISIBLE);
             questionConatiner.setVisibility(View.VISIBLE);
-            //rv.setVisibility(View.VISIBLE);
         }
     }
 
