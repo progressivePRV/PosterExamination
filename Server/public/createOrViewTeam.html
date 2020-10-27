@@ -211,7 +211,7 @@
         }
 
         function add(fieldValue, buttonValue, buttonRemoveValue, requiredField) {
-            $('.' + fieldValue).val('');
+            $('#' + requiredField).val('');
             $('.' + fieldValue).css('display', 'flex');
             console.log(document.getElementById(requiredField));
             document.getElementById(requiredField).required = true;
@@ -222,7 +222,7 @@
         }
 
         function remove(fieldValue, buttonValue, buttonRemoveValue, requiredField) {
-            $('.' + fieldValue).val('');
+            $('#' + requiredField).val('');
             document.getElementById(requiredField).required = false;
             $('.' + fieldValue).css('display', 'none');
             $('#' + buttonValue).css('display', '');
