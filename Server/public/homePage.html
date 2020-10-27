@@ -108,9 +108,29 @@
                 });
 
             }).catch(function (err) {
-                console.log(err);
-                alert("Session expired. Please login again!!");
-                window.location = '/';
+                if(err.response.data.error === 'no teams found'){
+                    var dt = $('#table').DataTable({
+                    "data": null,
+                    "columns": [
+                        {
+                            "class": "details-control",
+                            "orderable": false,
+                            "data": null,
+                            "defaultContent": ""
+                        },
+                        { "data": null},
+                        { "data": null },
+                        { "data": null }
+                    ],
+                    "columnDefs": [
+                        { "className": "dt-center", "targets": "_all" }
+                    ],
+                    "order": [[3, 'desc']]
+                });
+                }else{
+                    alert("Session expired. Please login again!!");
+                    window.location = '/';
+                }
             });
         });
 

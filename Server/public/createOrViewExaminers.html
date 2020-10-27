@@ -134,9 +134,31 @@
                             });
                         });
                     }).catch(function (err) {
-                        console.log(err);
+                        if(err.response.data.error === 'no examiners found'){
+                        var dt = $('#table').DataTable({
+                            "data": null,
+                            "columns": [
+                                {
+                                    "class": "qrcode_details",
+                                    "orderable": false,
+                                    "data": null,
+                                    "defaultContent": "Get QR Code"
+                                },
+                                {
+                                    "data": null,
+                                    "class": "border_class",
+                                },
+                                { "data": null },
+                                { "data": "email" }
+                            ],
+                            "columnDefs": [
+                                { "className": "dt-center", "targets": "_all" }
+                            ]
+                        });
+                    }else{
                         alert("Session expired. Please login again!!");
                         window.location = '/index.html';
+                    }
                     });
                 });
 
