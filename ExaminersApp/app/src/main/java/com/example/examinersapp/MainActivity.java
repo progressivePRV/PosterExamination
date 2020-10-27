@@ -102,13 +102,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        login_with_password_btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Intent i =  new Intent(MainActivity.this,PasswordLogin.class);
-////                startActivityForResult(i,REQUEST_CODE_FOR_PasswordLogin);
-//            }
-//        });
 
     }
 
@@ -227,7 +220,9 @@ public class MainActivity extends AppCompatActivity {
                     String role = root.getString("role");
                     if(!role.equals("examiner")){
                         Toast.makeText(MainActivity.this, "other than examiner no one is allowed in the App", Toast.LENGTH_SHORT).show();
-                        return;
+                        //return;
+                        //after this get out
+                        throw new Exception("other than examiner no one is allowed in the App");
                         //finish();
                     }
                     prefEditor.putString(TOKEN_KEY_FOR_PREFERENCE,root.getString("token"));
@@ -237,6 +232,9 @@ public class MainActivity extends AppCompatActivity {
                     GotoTeamEvaluationActivity();
                 } catch (JSONException e) {
                     Log.d(TAG, "onPostExecute: error in parsing json from result for login");
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    Log.d(TAG, "onPostExecute: error =>"+e.getMessage());
                     e.printStackTrace();
                 }
             }else{
@@ -255,12 +253,15 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            Log.d(TAG, "onPostExecute: now it will check for motionlayout scrreen start or end");
             if (motionLayout.getCurrentState() == R.id.start){
+                Log.d(TAG, "onPostExecute: this in start motion layout screen");
                 pb.setVisibility(View.INVISIBLE);
                 login_with_password_btn.setVisibility(View.VISIBLE);
                 login_with_qr_btn.setVisibility(View.VISIBLE);
                 pb_txt.setVisibility(View.INVISIBLE);
             }else if (motionLayout.getCurrentState() == R.id.end){
+                Log.d(TAG, "onPostExecute: this in end motion layout screen");
                 pb_txt.setVisibility(View.INVISIBLE);
                 pb.setVisibility(View.INVISIBLE);
                 email_TIL.setVisibility(View.VISIBLE);

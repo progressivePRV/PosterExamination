@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PasswordLogin"></activity>
         <activity android:name=".QuestionsActivity" />
         <activity android:name=".TeamsEvaluationActivity" />
         <activity android:name=".CameraPreview" />
