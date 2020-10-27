@@ -74,7 +74,7 @@ public class CameraPreview extends AppCompatActivity {
             Log.d(TAG, "onCreate: all permission granted");
             // use camera
             StartCamera();
-            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
         }else{
             ActivityCompat.requestPermissions(this,REQUIRED_PERMISSIONS,REQUEST_CODE_PERMISSIONS);
         }

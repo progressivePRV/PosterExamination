@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_QRCODE_DETECTOR = 2222;
     static final String EXAMINER_KEY_FOR_PREFERENCE = "EXAMINER";
     static final  String TOKEN_KEY_FOR_PREFERENCE = "TOKEN_KEY";
+    static final String JUST_FOR_LOGIN = "JUSTFORLOGIN";
     SharedPreferences preferences;
     SharedPreferences.Editor prefEditor;
     ProgressBar pb;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     Button login_with_qr_btn;
     Button login_with_password_btn;
     TextView pb_txt;
+    boolean just_for_login = false;
     MotionLayout motionLayout;
     private static String PASSWORD_LOGIN="PASSWORD";
     private static String QR_CODE_LOGIN="QR_CODE";
@@ -63,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
         if(!token.isEmpty()){
             GotoTeamEvaluationActivity();
         }
+        ///
+
+        ////// checking if anything got from intent
+        Log.d(TAG, "onCreate: checking for just for intent");
+        just_for_login = getIntent().getBooleanExtra(JUST_FOR_LOGIN,false);
+        Log.d(TAG, "onCreate: just for intent =>"+just_for_login);
         ///
         email_TIET = findViewById(R.id.email_TIET);
         password_TIET = findViewById(R.id.password_TIET);
@@ -211,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
             if (error.isEmpty() && result.isEmpty()){
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(MainActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
-                return;
+                //return;
             }
             if(error.isEmpty()){
                 // parse the result
@@ -229,6 +237,10 @@ public class MainActivity extends AppCompatActivity {
                     prefEditor.putString(EXAMINER_KEY_FOR_PREFERENCE,result);
                     prefEditor.commit();
                     Log.d(TAG, "onPostExecute: was sucedfull in puting whole string in prefrences=>"+result);
+                    if (just_for_login){
+                        // it will go back to last activity it came from
+                        finish();
+                    }
                     GotoTeamEvaluationActivity();
                 } catch (JSONException e) {
                     Log.d(TAG, "onPostExecute: error in parsing json from result for login");

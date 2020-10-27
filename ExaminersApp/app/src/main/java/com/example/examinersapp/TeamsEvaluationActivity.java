@@ -137,8 +137,9 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
             //get all team details as it got updated for a team
             CallingGetTeamDetails(GET_ALL_TEAM,"");
         }else if (REQUEST_CODE_FOR_QUESTION_ACTIVITY == requestCode && resultCode == RESULT_CANCELED){
-            Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
-            LogoutFromTheApp();
+            //Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onActivityResult: it came back from question activity with result cancel");
+            //LogoutFromTheApp();
         }
     }
 
@@ -181,7 +182,7 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
             if (error.isEmpty() && result.isEmpty()){
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(TeamsEvaluationActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
-                return;
+                //return;
             }
             if(error.isEmpty()){
                 // parse the result
@@ -221,15 +222,11 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                     String er = root.getString("error");
                     if (root.has("errorOn")){
                         Toast.makeText(TeamsEvaluationActivity.this, "Team QR-code expired", Toast.LENGTH_SHORT).show();
-                    }else{
-                        JSONObject error = root.getJSONObject("error");
-                        String errorName = error.getString("name");
-                        if (errorName.contains("TokenExpired")){
+                    }else if(er.contains("TokenExpired")){
                             Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
                             LogoutFromTheApp();
-                        }else{
-                            Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
-                        }
+                    }else{
+                        Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
                     }
                     Log.d(TAG, "onPostExecute: error in getting team=>"+er);
 

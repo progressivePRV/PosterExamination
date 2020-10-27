@@ -13,7 +13,7 @@
     <string name="avg_score_txt">Average Score</string>
     <string name="authentication_txt">Authenticating......</string>
     <string name="getting_teams_txt">Getting Teams Details....</string>
-    <string name="evaluatio_for_txt">"Evaluation For Team: "</string>
+    <string name="evaluatio_for_txt">"Evaluation For Team"</string>
     <string name="submit_the_score_txt">Submit the Score</string>
     <string name="help_txt_in_questionActivity">As soon as you give your feedback for last question your evaluation will be submitted</string>
     <string name="logout">Logout</string>
