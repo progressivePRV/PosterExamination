@@ -275,8 +275,12 @@
                 location.reload();
             }).catch(function (err) {
                 console.log(err);
-                alert("Session expired. Please login again!!");
-                window.location = '/';
+                if(err.response.data.error.errors != undefined){
+                        alert(err.response.data.error.errors[0].msg);
+                }else{
+                        alert("Session expired. Please login again!!");
+                        window.location = '/';
+                }
             });
         }
 
