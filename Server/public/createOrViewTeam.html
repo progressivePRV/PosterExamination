@@ -28,30 +28,30 @@
 
                 <div style="display:flex">
                     <input type="text" id="s1Name" name="s1Name" placeholder="Enter Student 1 name.." required>
-                    <button  type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add1"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add1"
                         onclick="add('studentTwo','add1','','s2Name')">+</button>
                 </div>
 
                 <div class="studentTwo">
                     <input type="text" id="s2Name" name="s2Name" placeholder="Enter Student 2 name..">
-                    <button  type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add2"
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add2"
                         onclick="add('studentThree','add2','remove2','s3Name')">+</button>
-                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove2"
-                        onclick="remove('studentTwo','add1','','s2Name')">-</button>
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus"
+                        id="remove2" onclick="remove('studentTwo','add1','','s2Name')">-</button>
                 </div>
 
                 <div class="studentThree">
                     <input type="text" id="s3Name" name="s3Name" placeholder="Enter Student 3 name..">
                     <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-green button-add" id="add3"
                         onclick="add('studentFour','add3','remove3','s4Name')">+</button>
-                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove3"
-                        onclick="remove('studentThree','add2','remove2','s3Name')">-</button>
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus"
+                        id="remove3" onclick="remove('studentThree','add2','remove2','s3Name')">-</button>
                 </div>
 
                 <div class="studentFour">
                     <input type="text" id="s4Name" name="s4Name" placeholder="Enter Student 4 name..">
-                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus" id="remove4"
-                        onclick="remove('studentFour','add3','remove3','s4Name')">-</button>
+                    <button type="button" class="w3-button w3-small w3-circle w3-ripple w3-red button-minus"
+                        id="remove4" onclick="remove('studentFour','add3','remove3','s4Name')">-</button>
                 </div>
 
                 <button type="submit" id="submit_button">Create New Team</button>
@@ -159,30 +159,30 @@
 
 
             }).catch(function (err) {
-                if(err.response.data.error === 'no teams found'){
+                if (err.response.data.error === 'no teams found') {
                     var dt = $('#table').DataTable({
-                    "data": null,
-                    "columns": [
-                        {
-                            "class": "qrcode_details",
-                            "orderable": false,
-                            "data": "",
-                            "defaultContent": "Get QR Code"
-                        },
-                        {
-                            "data": null,
-                            "class": "border_class",
-                        },
-                        { "data": null }
-                    ],
-                    "columnDefs": [
-                        { "className": "dt-center", "targets": "_all" }
-                    ]
-                });
-            }else{
-                alert("Session expired. Please login again!!");
-                window.location = '/';
-            }
+                        "data": null,
+                        "columns": [
+                            {
+                                "class": "qrcode_details",
+                                "orderable": false,
+                                "data": "",
+                                "defaultContent": "Get QR Code"
+                            },
+                            {
+                                "data": null,
+                                "class": "border_class",
+                            },
+                            { "data": null }
+                        ],
+                        "columnDefs": [
+                            { "className": "dt-center", "targets": "_all" }
+                        ]
+                    });
+                } else {
+                    alert("Session expired. Please login again!!");
+                    window.location = '/';
+                }
             });
 
         });
@@ -275,11 +275,13 @@
                 location.reload();
             }).catch(function (err) {
                 console.log(err);
-                if(err.response.data.error.errors != undefined){
-                        alert(err.response.data.error.errors[0].msg);
-                }else{
-                        alert("Session expired. Please login again!!");
-                        window.location = '/';
+                if (err.response.data.error.errors == undefined) {
+                    alert("Team name already exsits. Please provide another team")
+                } else if (err.response.data.error.errors != undefined) {
+                    alert(err.response.data.error.errors[0].msg);
+                } else {
+                    alert("Session expired. Please login again!!");
+                    window.location = '/';
                 }
             });
         }
