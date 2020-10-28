@@ -406,11 +406,13 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                         if (errorName.contains("TokenExpired")){
                             Log.d(TAG, "onPostExecute: token expired check pass");
                             Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
-                            Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
-                            i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
-                            Log.d(TAG, "onPostExecute: set just for login true");
-                            preferences.edit().clear().commit();
-                            startActivity(i);
+//                            Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
+//                            i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
+//                            Log.d(TAG, "onPostExecute: set just for login true");
+//                            preferences.edit().clear().commit();
+//                            startActivity(i);
+                            setResult(RESULT_OK);
+                            finish();
                         }else{
                             Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                         }

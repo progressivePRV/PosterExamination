@@ -222,7 +222,7 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                         if (root.has("errorOn")){
                             Toast.makeText(TeamsEvaluationActivity.this, "Team QR-code expired", Toast.LENGTH_SHORT).show();
                         }else if(er.contains("TokenExpired")){
-                            Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TeamsEvaluationActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
                             LogoutFromTheApp();
                         }else{
                             Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
