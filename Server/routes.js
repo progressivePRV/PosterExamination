@@ -375,12 +375,17 @@ route.post('/admin/teams',[
     try{
         var team={};
         var members = request.body.members.split(",");
+        var j=0;
+        var newMembers = [];
         if(members && members.length>0 && members.length<=4){
             for(var i=0;i<members.length;i++){
-                members[i]=members[i].trim();
+                if(members[i]!=undefined && members[i]!=null && members[i] != '' && members[i].trim()!=undefined && members[i].trim()!=null && members[i].trim()!=''){
+                    newMembers[j]=members[i].trim();
+                    j++;
+                }
             }
             team.name = request.body.name.trim();
-            team.members = members;
+            team.members = newMembers;
             team.averageScore = 0;
             team.examiners = [];
 
