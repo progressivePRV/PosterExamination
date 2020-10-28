@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         ////// checking if anything got from intent
         Log.d(TAG, "onCreate: checking for just for intent");
+//        Log.d(TAG, getIntent().getExtras().containsKey("JUST_FOR_LOGIN")+" ");
         just_for_login = getIntent().getBooleanExtra(JUST_FOR_LOGIN,false);
         Log.d(TAG, "onCreate: just for intent =>"+just_for_login);
         ///
@@ -114,9 +115,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void GotoTeamEvaluationActivity(){
-        Intent i =  new Intent(MainActivity.this,TeamsEvaluationActivity.class);
-        startActivity(i);
-        finish();
+        if(just_for_login){
+            finish();
+        }else {
+            Intent i =  new Intent(MainActivity.this,TeamsEvaluationActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     @Override
@@ -237,10 +242,7 @@ public class MainActivity extends AppCompatActivity {
                     prefEditor.putString(EXAMINER_KEY_FOR_PREFERENCE,result);
                     prefEditor.commit();
                     Log.d(TAG, "onPostExecute: was sucedfull in puting whole string in prefrences=>"+result);
-                    if (just_for_login){
-                        // it will go back to last activity it came from
-                        finish();
-                    }
+                    Log.d(TAG, "onPostExecute: just_for_login=>"+just_for_login);
                     GotoTeamEvaluationActivity();
                 } catch (JSONException e) {
                     Log.d(TAG, "onPostExecute: error in parsing json from result for login");
