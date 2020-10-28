@@ -21,9 +21,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/users/profile",
+					"raw": "64.227.27.167:3000/api/v1/users/profile",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -44,7 +47,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTg2MTE5LCJpYXQiOjE2MDI5ODI1MTl9.JB0QK8JLhRRAcrvZbL8sXUj0YMjf2wkLFGkPIJMQAF0",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzOTA1MDE0LCJpYXQiOjE2MDM5MDE0MTR9.a68oB3JDUnnzfZegEk-JDPqJ_kVqmarmODNS0WlSkBs",
 							"type": "string"
 						}
 					]
@@ -52,9 +55,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/examiners/5f8a4420dc55393ed56de5e6",
+					"raw": "64.227.27.167:3000/api/v1/admin/examiners/5f977fb307313d62c3f460d1",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -62,7 +68,7 @@
 						"v1",
 						"admin",
 						"examiners",
-						"5f8a4420dc55393ed56de5e6"
+						"5f977fb307313d62c3f460d1"
 					]
 				}
 			},
@@ -76,7 +82,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTkwMjc0LCJpYXQiOjE2MDI5ODY2NzR9.d_MS9JqqjeHVGvOW6siaEWAjhOxfVm3KMqTm47Ap3vA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzOTA1MDE0LCJpYXQiOjE2MDM5MDE0MTR9.a68oB3JDUnnzfZegEk-JDPqJ_kVqmarmODNS0WlSkBs",
 							"type": "string"
 						}
 					]
@@ -84,9 +90,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/examiners",
+					"raw": "64.227.27.167:3000/api/v1/admin/examiners",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -124,7 +133,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhNDQyMGRjNTUzOTNlZDU2ZGU1ZTYiLCJmaXJzdE5hbWUiOiJBbmlyYmFuIiwibGFzdE5hbWUiOiJBY2hhcnlhIiwiZW1haWwiOiJhbmlyYmFuQGdtYWlsLmNvbSIsInJvbGUiOiJleGFtaW5lciJ9.6LoitDhCwhu3ztdRZaJjXChBFOZqxPTJuyiL3X6fe0s",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk3N2ZmMzA3MzEzZDYyYzNmNDYwZDQiLCJmaXJzdE5hbWUiOiJBZGl0aSIsImxhc3ROYW1lIjoiUm9qYXRrYXIiLCJlbWFpbCI6ImFkaXRpcm9qYXRrYXJAZ21haWwuY29tIiwicm9sZSI6ImV4YW1pbmVyIiwiZXhwIjoxNjAzOTA0NzMyLCJpYXQiOjE2MDM5MDExMzJ9.bcjGu5RaNju59F97eoc_cmpfuyTxMckV7CoMn5mw5co",
 							"type": "string"
 						}
 					]
@@ -133,15 +142,18 @@
 				"header": [
 					{
 						"key": "teamToken",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmOGE1YTM5YWE1NTU0M2Y4OTAxY2M4NSIsImlhdCI6MTYwMjk4ODYzNX0.nQyoxquZuEOgndmOvcdM26KkPEN_HGQQJvW-0mEm1M8",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmOTc3ZTQzMDczMTNkNjJjM2Y0NjBjZSIsImV4cCI6MTYwMzk4NzcxMSwiaWF0IjoxNjAzOTAxMzExfQ.29GaPy85h49EhzXIw-7mxFimrziLOBpCg7dTIGUp7Qk",
 						"type": "text",
 						"disabled": true
 					}
 				],
 				"url": {
-					"raw": "localhost:3000/api/v1/examiner/teams",
+					"raw": "64.227.27.167:3000/api/v1/examiner/teams",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -170,9 +182,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/teams",
+					"raw": "64.227.27.167:3000/api/v1/admin/teams",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -200,7 +215,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTA3MjcyLCJpYXQiOjE2MDI5MDM2NzJ9.TCyNjGou6F40s5DoP9DWYA3nFlbv-_YK8fysurgDo4Q",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzNzY1NjQxLCJpYXQiOjE2MDM3NjUzNDF9.swehPSIw3G32MLvCW8ylKL91mztTtJt3D4qQwS1nClI",
 							"type": "string"
 						}
 					]
@@ -209,7 +224,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\":\"dhwani\",\n    \"members\":\"aditi, shweta, nidhi\"\n}",
+					"raw": "{\n    \"name\":\"game of thrones\",\n    \"members\":\"aditi, venu, gayatri\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -217,9 +232,12 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/teams",
+					"raw": "64.227.27.167:3000/api/v1/admin/teams",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -248,9 +266,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/examiner/questions/5",
+					"raw": "64.227.27.167:3000/api/v1/examiner/questions/5",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -280,9 +301,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/examiner/questions",
+					"raw": "64.227.27.167:3000/api/v1/examiner/questions",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -299,11 +323,16 @@
 			"name": "Login",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
+					"type": "basic",
+					"basic": [
 						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhM2VkZjA1NzBkYTNlOWE1ODczYzkiLCJmaXJzdE5hbWUiOiJKYW5pY2UiLCJsYXN0TmFtZSI6IlNtaXRoIiwiZW1haWwiOiJqYW5pY2VAZ21haWwuY29tIiwicm9sZSI6ImV4YW1pbmVyIiwiaWF0IjoxNjAyOTg2Nzg3fQ.8dpPBIpS4A5Z52aNecFNjzqY3hL5SCHISzdQ4kHyDRs",
+							"key": "password",
+							"value": "admin123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "john@gmail.com",
 							"type": "string"
 						}
 					]
@@ -311,9 +340,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/users/login",
+					"raw": "64.227.27.167:3000/api/v1/users/login",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -351,9 +383,12 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/examiners",
+					"raw": "64.227.27.167:3000/api/v1/admin/examiners",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -383,7 +418,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"teamId\":\"5f8a5f4d3517833fad3a2e57\",\n    \"scores\":[\n        {\n            \"id\":1,\n            \"marks\":3\n        },\n        {\n            \"id\":2,\n            \"marks\":3\n        },\n        {\n            \"id\":3,\n            \"marks\":1\n        },\n        {\n            \"id\":4,\n            \"marks\":3\n        },\n        {\n            \"id\":5,\n            \"marks\":4\n        },\n        {\n            \"id\":6,\n            \"marks\":1\n        },\n        {\n            \"id\":7,\n            \"marks\":2\n        }\n    ]\n}",
+					"raw": "{\n    \"teamId\":\"5f977e4307313d62c3f460ce\",\n    \"scores\":[\n        {\"id\":1,\"marks\":2},\n        {\"id\":2,\"marks\":0},\n        {\"id\":3,\"marks\":3},\n        {\"id\":4,\"marks\":2},\n        {\"id\":5,\"marks\":4},\n        {\"id\":6,\"marks\":4},\n        {\"id\":7,\"marks\":3}\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -391,9 +426,12 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/api/v1/examiner/score",
+					"raw": "64.227.27.167:3000/api/v1/examiner/score",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -414,7 +452,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTkwMjc0LCJpYXQiOjE2MDI5ODY2NzR9.d_MS9JqqjeHVGvOW6siaEWAjhOxfVm3KMqTm47Ap3vA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzOTA1MDE0LCJpYXQiOjE2MDM5MDE0MTR9.a68oB3JDUnnzfZegEk-JDPqJ_kVqmarmODNS0WlSkBs",
 							"type": "string"
 						}
 					]
@@ -422,9 +460,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/examiners/5f8a3edf0570da3e9a5873c9/qrToken",
+					"raw": "64.227.27.167:3000/api/v1/admin/examiners/5f977fb307313d62c3f460d1/qrToken",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -432,7 +473,7 @@
 						"v1",
 						"admin",
 						"examiners",
-						"5f8a3edf0570da3e9a5873c9",
+						"5f977fb307313d62c3f460d1",
 						"qrToken"
 					]
 				}
@@ -447,7 +488,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTkwMjc0LCJpYXQiOjE2MDI5ODY2NzR9.d_MS9JqqjeHVGvOW6siaEWAjhOxfVm3KMqTm47Ap3vA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzOTA0ODQ2LCJpYXQiOjE2MDM5MDEyNDZ9.W-XQ0f7TVqEWqqW0W9aFVSzW1EXi2z46ryHUpZjApUY",
 							"type": "string"
 						}
 					]
@@ -455,9 +496,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/teams/5f8a5a39aa55543f8901cc85/qrToken",
+					"raw": "64.227.27.167:3000/api/v1/admin/teams/5f977e4307313d62c3f460ce/qrToken",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -465,7 +509,7 @@
 						"v1",
 						"admin",
 						"teams",
-						"5f8a5a39aa55543f8901cc85",
+						"5f977e4307313d62c3f460ce",
 						"qrToken"
 					]
 				}
@@ -480,7 +524,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAyOTkwMjc0LCJpYXQiOjE2MDI5ODY2NzR9.d_MS9JqqjeHVGvOW6siaEWAjhOxfVm3KMqTm47Ap3vA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjhhMzAzNWFjN2E5NjNlMzZjY2Y5YWIiLCJmaXJzdE5hbWUiOiJKb2huIiwibGFzdE5hbWUiOiJEb2UiLCJlbWFpbCI6ImpvaG5AZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjAzOTA1MDE0LCJpYXQiOjE2MDM5MDE0MTR9.a68oB3JDUnnzfZegEk-JDPqJ_kVqmarmODNS0WlSkBs",
 							"type": "string"
 						}
 					]
@@ -488,9 +532,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/api/v1/admin/teams/5f8a5f4d3517833fad3a2e57",
+					"raw": "64.227.27.167:3000/api/v1/admin/teams/5f977e4307313d62c3f460ce",
 					"host": [
-						"localhost"
+						"64",
+						"227",
+						"27",
+						"167"
 					],
 					"port": "3000",
 					"path": [
@@ -498,7 +545,7 @@
 						"v1",
 						"admin",
 						"teams",
-						"5f8a5f4d3517833fad3a2e57"
+						"5f977e4307313d62c3f460ce"
 					]
 				}
 			},
