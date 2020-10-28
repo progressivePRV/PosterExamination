@@ -225,46 +225,47 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(MainActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
                 //return;
-            }
-            if(error.isEmpty()){
-                // parse the result
-                try {
-                    JSONObject root =  new JSONObject(result);
-                    String role = root.getString("role");
-                    if(!role.equals("examiner")){
-                        Toast.makeText(MainActivity.this, "other than examiner no one is allowed in the App", Toast.LENGTH_SHORT).show();
-                        //return;
-                        //after this get out
-                        throw new Exception("other than examiner no one is allowed in the App");
-                        //finish();
+            } else{
+                if(error.isEmpty()){
+                    // parse the result
+                    try {
+                        JSONObject root =  new JSONObject(result);
+                        String role = root.getString("role");
+                        if(!role.equals("examiner")){
+                            Toast.makeText(MainActivity.this, "other than examiner no one is allowed in the App", Toast.LENGTH_SHORT).show();
+                            //return;
+                            //after this get out
+                            throw new Exception("other than examiner no one is allowed in the App");
+                            //finish();
+                        }
+                        prefEditor.putString(TOKEN_KEY_FOR_PREFERENCE,root.getString("token"));
+                        prefEditor.putString(EXAMINER_KEY_FOR_PREFERENCE,result);
+                        prefEditor.commit();
+                        Log.d(TAG, "onPostExecute: was sucedfull in puting whole string in prefrences=>"+result);
+                        Log.d(TAG, "onPostExecute: just_for_login=>"+just_for_login);
+                        GotoTeamEvaluationActivity();
+                    } catch (JSONException e) {
+                        Log.d(TAG, "onPostExecute: error in parsing json from result for login");
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        Log.d(TAG, "onPostExecute: error =>"+e.getMessage());
+                        e.printStackTrace();
                     }
-                    prefEditor.putString(TOKEN_KEY_FOR_PREFERENCE,root.getString("token"));
-                    prefEditor.putString(EXAMINER_KEY_FOR_PREFERENCE,result);
-                    prefEditor.commit();
-                    Log.d(TAG, "onPostExecute: was sucedfull in puting whole string in prefrences=>"+result);
-                    Log.d(TAG, "onPostExecute: just_for_login=>"+just_for_login);
-                    GotoTeamEvaluationActivity();
-                } catch (JSONException e) {
-                    Log.d(TAG, "onPostExecute: error in parsing json from result for login");
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    Log.d(TAG, "onPostExecute: error =>"+e.getMessage());
-                    e.printStackTrace();
-                }
-            }else{
-                // parse the error
-                Log.d(TAG, "onPostExecute: there was some error while login using qr code");
-                Log.d(TAG, "onPostExecute: error=>"+error);
-                try {
-                    JSONObject root =  new JSONObject(result);
-                    String er = root.getString("error");
-                    if(er.contains("ReferenceError")){
-                        Toast.makeText(MainActivity.this, "QR-code expired", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
+                }else{
+                    // parse the error
+                    Log.d(TAG, "onPostExecute: there was some error while login using qr code");
+                    Log.d(TAG, "onPostExecute: error=>"+error);
+                    try {
+                        JSONObject root =  new JSONObject(result);
+                        String er = root.getString("error");
+                        if(er.contains("ReferenceError")){
+                            Toast.makeText(MainActivity.this, "QR-code expired", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(MainActivity.this, er, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
             Log.d(TAG, "onPostExecute: now it will check for motionlayout scrreen start or end");

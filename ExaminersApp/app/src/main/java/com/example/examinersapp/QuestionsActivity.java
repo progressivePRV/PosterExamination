@@ -289,42 +289,42 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                 Toast.makeText(QuestionsActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
                 finish();
                 //return;
-            }
-            if(error.isEmpty()) {
-                // parse the result
-                try {
-                    JSONObject root = new JSONObject(result);
-                    JSONArray Qs = root.getJSONArray("results");
-                    for(int i=0;i<Qs.length();i++){
-                        JSONObject Q = Qs.getJSONObject(i);
-                        Question q = gson.fromJson(Q.toString(),Question.class);
-                        questions.add(q);
-                        QuestionMarks qm = new QuestionMarks(i+1,-1);
-                        score.scores.add(i,qm);
-                        isAnswered.add(false); // setting that this question is not answered
+            }else {
+                if(error.isEmpty()) {
+                    // parse the result
+                    try {
+                        JSONObject root = new JSONObject(result);
+                        JSONArray Qs = root.getJSONArray("results");
+                        for(int i=0;i<Qs.length();i++){
+                            JSONObject Q = Qs.getJSONObject(i);
+                            Question q = gson.fromJson(Q.toString(),Question.class);
+                            questions.add(q);
+                            QuestionMarks qm = new QuestionMarks(i+1,-1);
+                            score.scores.add(i,qm);
+                            isAnswered.add(false); // setting that this question is not answered
+                        }
+                        //start showing the question
+                        SetTheFirstQuestion();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onPostExecute: error in parsing questions");
                     }
-                    //start showing the question
-                    SetTheFirstQuestion();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "onPostExecute: error in parsing questions");
-                }
-
-            }else{
-                Log.d(TAG, "onPostExecute: error=>"+error);
-                try {
-                    JSONObject root =  new JSONObject(result);
-                    String er = root.getString("error");
-                    JSONObject error = root.getJSONObject("error");
-                    String errorName = error.getString("name");
-                    if (errorName.contains("TokenExpired")){
-                        setResult(RESULT_CANCELED);
-                        finish();
+                }else{
+                    Log.d(TAG, "onPostExecute: error=>"+error);
+                    try {
+                        JSONObject root =  new JSONObject(result);
+                        String er = root.getString("error");
+                        JSONObject error = root.getJSONObject("error");
+                        String errorName = error.getString("name");
+                        if (errorName.contains("TokenExpired")){
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        }
+                        Log.d(TAG, "onPostExecute: error in getting questions=>"+er);
+                        //Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    Log.d(TAG, "onPostExecute: error in getting questions=>"+er);
-                    //Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
             pb.setVisibility(View.INVISIBLE);
@@ -387,35 +387,36 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(QuestionsActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
                 // return;
-            }
-            if(error.isEmpty()) {
-                // parse the result
-                Log.d(TAG, "onPostExecute: after sending the scores result=>"+result);
-                Toast.makeText(QuestionsActivity.this, "Evaluation Sent", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                finish();
             }else{
-                Log.d(TAG, "onPostExecute: error=>"+error);
-                try {
-                    JSONObject root =  new JSONObject(result);
-                    String er = root.getString("error");
-                    Log.d(TAG, "onPostExecute: error in sending scores=>"+er);
-                    JSONObject error = root.getJSONObject("error");
-                    String errorName = error.getString("name");
-                    Log.d(TAG, "onPostExecute: before checking for token expired string");
-                    if (errorName.contains("TokenExpired")){
-                        Log.d(TAG, "onPostExecute: token expired check pass");
-                        Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
-                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
-                        i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
-                        Log.d(TAG, "onPostExecute: set just for login true");
-                        preferences.edit().clear().commit();
-                        startActivity(i);
-                    }else{
-                        Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
+                if(error.isEmpty()) {
+                    // parse the result
+                    Log.d(TAG, "onPostExecute: after sending the scores result=>"+result);
+                    Toast.makeText(QuestionsActivity.this, "Evaluation Sent", Toast.LENGTH_SHORT).show();
+                    setResult(RESULT_OK);
+                    finish();
+                }else{
+                    Log.d(TAG, "onPostExecute: error=>"+error);
+                    try {
+                        JSONObject root =  new JSONObject(result);
+                        String er = root.getString("error");
+                        Log.d(TAG, "onPostExecute: error in sending scores=>"+er);
+                        JSONObject error = root.getJSONObject("error");
+                        String errorName = error.getString("name");
+                        Log.d(TAG, "onPostExecute: before checking for token expired string");
+                        if (errorName.contains("TokenExpired")){
+                            Log.d(TAG, "onPostExecute: token expired check pass");
+                            Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
+                            Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
+                            i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
+                            Log.d(TAG, "onPostExecute: set just for login true");
+                            preferences.edit().clear().commit();
+                            startActivity(i);
+                        }else{
+                            Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
             pb.setVisibility(View.INVISIBLE);

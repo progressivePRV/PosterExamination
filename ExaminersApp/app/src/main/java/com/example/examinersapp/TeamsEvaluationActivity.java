@@ -183,57 +183,58 @@ public class TeamsEvaluationActivity extends AppCompatActivity {
                 Log.d(TAG, "onPostExecute: No response from sever");
                 Toast.makeText(TeamsEvaluationActivity.this, "No response from sever", Toast.LENGTH_SHORT).show();
                 //return;
-            }
-            if(error.isEmpty()){
-                // parse the result
-                if (decision.equals(GET_SINGLE_TEAM)){
-                    Log.d(TAG, "onPostExecute: will pare the result for a single team=>"+result);
-                    TeamClass t = gson.fromJson(result,TeamClass.class);
-                    ///////////// got to questions activity
-                    Log.d(TAG, "onPostExecute: calling question activity");
-                    Intent i =  new Intent(TeamsEvaluationActivity.this,QuestionsActivity.class);
-                    i.putExtra(TEAM_KEY,t);
-                    startActivityForResult(i,REQUEST_CODE_FOR_QUESTION_ACTIVITY);
-                    /////////////
-                }else if(decision.equals(GET_ALL_TEAM)){
-                    Log.d(TAG, "onPostExecute: will parse the result for team detaisl=>"+result);
-                    Type teamsType = new TypeToken<ArrayList<TeamClass>>(){}.getType();
-                    teams = gson.fromJson(result, teamsType);
-                    // sort teams first
-                    Collections.sort(teams, new Comparator<TeamClass>() {
-                        @Override
-                        public int compare(TeamClass o1, TeamClass o2) {
-                            return o2.averageScore.compareTo(o1.averageScore);
-                        }
-                    });
-
-                    rv_adapter =  new TeamsAdapter(teams);
-                    rv.setAdapter(rv_adapter);
-                }else{
-                    Log.d(TAG, "onPostExecute: it didn't went for get all teams or get single team");
-                }
-
             }else{
-                // parse the error
-                Log.d(TAG, "onPostExecute: there was some error while getting teams ");
-                Log.d(TAG, "onPostExecute: error=>"+error);
-                try {
-                    JSONObject root =  new JSONObject(result);
-                    String er = root.getString("error");
-                    if (root.has("errorOn")){
-                        Toast.makeText(TeamsEvaluationActivity.this, "Team QR-code expired", Toast.LENGTH_SHORT).show();
-                    }else if(er.contains("TokenExpired")){
+                if(error.isEmpty()){
+                    // parse the result
+                    if (decision.equals(GET_SINGLE_TEAM)){
+                        Log.d(TAG, "onPostExecute: will pare the result for a single team=>"+result);
+                        TeamClass t = gson.fromJson(result,TeamClass.class);
+                        ///////////// got to questions activity
+                        Log.d(TAG, "onPostExecute: calling question activity");
+                        Intent i =  new Intent(TeamsEvaluationActivity.this,QuestionsActivity.class);
+                        i.putExtra(TEAM_KEY,t);
+                        startActivityForResult(i,REQUEST_CODE_FOR_QUESTION_ACTIVITY);
+                        /////////////
+                    }else if(decision.equals(GET_ALL_TEAM)){
+                        Log.d(TAG, "onPostExecute: will parse the result for team detaisl=>"+result);
+                        Type teamsType = new TypeToken<ArrayList<TeamClass>>(){}.getType();
+                        teams = gson.fromJson(result, teamsType);
+                        // sort teams first
+                        Collections.sort(teams, new Comparator<TeamClass>() {
+                            @Override
+                            public int compare(TeamClass o1, TeamClass o2) {
+                                return o2.averageScore.compareTo(o1.averageScore);
+                            }
+                        });
+
+                        rv_adapter =  new TeamsAdapter(teams);
+                        rv.setAdapter(rv_adapter);
+                    }else{
+                        Log.d(TAG, "onPostExecute: it didn't went for get all teams or get single team");
+                    }
+                }else{
+                    // parse the error
+                    Log.d(TAG, "onPostExecute: there was some error while getting teams ");
+                    Log.d(TAG, "onPostExecute: error=>"+error);
+                    try {
+                        JSONObject root =  new JSONObject(result);
+                        String er = root.getString("error");
+                        if (root.has("errorOn")){
+                            Toast.makeText(TeamsEvaluationActivity.this, "Team QR-code expired", Toast.LENGTH_SHORT).show();
+                        }else if(er.contains("TokenExpired")){
                             Toast.makeText(TeamsEvaluationActivity.this, "Session expired", Toast.LENGTH_SHORT).show();
                             LogoutFromTheApp();
-                    }else{
-                        Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
-                    }
-                    Log.d(TAG, "onPostExecute: error in getting team=>"+er);
+                        }else{
+                            Toast.makeText(TeamsEvaluationActivity.this, er, Toast.LENGTH_SHORT).show();
+                        }
+                        Log.d(TAG, "onPostExecute: error in getting team=>"+er);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
             teamName_tv.setVisibility(View.VISIBLE);
             avg_score_tv.setVisibility(View.VISIBLE);
             rv.setVisibility(View.VISIBLE);
