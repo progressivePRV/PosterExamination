@@ -231,9 +231,9 @@ route.get("/users/login",[
                             if(bcrypt.compareSync(loginInfo[1],user.password)){
                                 result=user.getUser();
                                 user=user.getUser();
-                                //user.exp = Math.floor(Date.now() / 1000) + (60 * 60);
+                                user.exp = Math.floor(Date.now() / 1000) + (60 * 60);
                                 //for testing only. uncomment line 234 for final implementation
-                                user.exp = Math.floor(Date.now() / 1000) + (60 * 5);
+                                //user.exp = Math.floor(Date.now() / 1000) + (60 * 5);
                                 var token = jwt.sign(user, tokenSecret);
                                 result.token=token;
                                 responseCode=200;
@@ -667,8 +667,8 @@ route.get('/admin/examiners/:id/qrToken',[
 
         var examiner = res[0];
         if(examiner.role==='examiner'){
-            //examiner.exp = Math.floor(Date.now() / 1000) + (60 * 60 * 24);
-            examiner.exp = Math.floor(Date.now() / 1000) + (60 * 5);
+            examiner.exp = Math.floor(Date.now() / 1000) + (60 * 60 * 24);
+            //examiner.exp = Math.floor(Date.now() / 1000) + (60 * 5);
             var token = jwt.sign(examiner, tokenSecret);
             closeConnection();
             return response.status(200).json({"qrToken":token});
@@ -705,8 +705,8 @@ route.get('/admin/teams/:id/qrToken',[
         var team = {
             id: res[0]._id
         };
-        //team.exp = Math.floor(Date.now() / 1000) + (60 * 60 * 24);
-        team.exp = Math.floor(Date.now() / 1000) + (60 * 5);
+        team.exp = Math.floor(Date.now() / 1000) + (60 * 60 * 24);
+        //team.exp = Math.floor(Date.now() / 1000) + (60 * 5);
         var token = jwt.sign(team, tokenSecret);
         closeConnection();
         return response.status(200).json({"qrToken":token});
