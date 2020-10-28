@@ -91,24 +91,16 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
 
         next_btn.setOnClickListener(v -> {
             Log.d(TAG, "onClick: next button clicked in question activity");
-            //// temporary
-            Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
-                        i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
-                        Log.d(TAG, "onPostExecute: set just for login true");
-                        preferences.edit().clear().commit();
-                        startActivity(i);
-
-            ///////
             // if all answered then now user can submit anytime
-//            if (isAnswered.get(questions.size()-1)  && current_question_no == questions.size()){
-//                Log.d(TAG, "you will submit score here =>"+gson.toJson(score));
-//                new SendTheEvaluation().execute(gson.toJson(score));
-//                //Toast.makeText(this, "you will submit result now", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//            // call animation for taking view to left ---> nextQuestion ---> getting view from right
-//            AnimateLeftNextQRight();
-//            //NextQuestion();
+            if (isAnswered.get(questions.size()-1)  && current_question_no == questions.size()){
+                Log.d(TAG, "you will submit score here =>"+gson.toJson(score));
+                new SendTheEvaluation().execute(gson.toJson(score));
+                //Toast.makeText(this, "you will submit result now", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // call animation for taking view to left ---> nextQuestion ---> getting view from right
+            AnimateLeftNextQRight();
+            //NextQuestion();
         });
 
         prev_btn.setOnClickListener(v -> {
@@ -414,11 +406,11 @@ public class QuestionsActivity extends AppCompatActivity implements OptionAdapte
                     if (errorName.contains("TokenExpired")){
                         Log.d(TAG, "onPostExecute: token expired check pass");
                         Toast.makeText(QuestionsActivity.this, "Session Expired", Toast.LENGTH_SHORT).show();
-//                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
-//                        i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
-//                        Log.d(TAG, "onPostExecute: set just for login true");
-//                        preferences.edit().clear().commit();
-//                        startActivity(i);
+                        Intent i =  new Intent(QuestionsActivity.this,MainActivity.class);
+                        i.putExtra(MainActivity.JUST_FOR_LOGIN,true);
+                        Log.d(TAG, "onPostExecute: set just for login true");
+                        preferences.edit().clear().commit();
+                        startActivity(i);
                     }else{
                         Toast.makeText(QuestionsActivity.this, er, Toast.LENGTH_SHORT).show();
                     }
