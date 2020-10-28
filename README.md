@@ -1,7 +1,11 @@
 # PosterExamination
 
-1. Clone Project
-2. Go inside Server folder on terminal
-3. run the app using comman on terminal : node server.js (if you are using nodemon: nodemon server.js)
+For more Information on this repo goto [wiki](https://github.com/rojatkaraditi/PosterExamination/wiki)
 
-Before anything, make sure node and npm are installed on your machine. Use offical node installation for installation
+## **External Links**
+
+**_Youtube Video_**
+
+**1. Application Demo**
+https://youtu.be/uYc2UiEhRP0
+
