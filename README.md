@@ -1,6 +1,6 @@
 # PosterExamination
 
-For more Information on this repo goto [wiki](https://github.com/rojatkaraditi/PosterExamination/wiki)
+For more Information on this repo goto [wiki](https://github.com/progressivePRV/PosterExamination/wiki)
 
 ## **External Links**
 
